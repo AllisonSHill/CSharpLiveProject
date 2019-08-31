@@ -11,11 +11,16 @@ After I finished the front end story and created a modal in which to enter shift
 //screenshot of JobsController create function
 
 The third story I worked on was upgrading the site's chat feature. The chat feature was already set up to open on all logged in user's screens when a message was sent, as well as save the messages in a database and populate old messages every time the Chat Modal was launched. I created chat bubbles based on a sample image I was given. 
+
 //screenshot of sample image
 //screenshot of css
+
 I then added a script to allow the messages to be sent using the enter key. 
-//script for enter key
+
+//script for enter key function
+
 The most challenging part of this story was figuring out how to change the styling of the chat bubbles based on the currently logged in user, so the user would see their chat messages on the right of the module, and a different color than everyone else's chat. 
+
 //screenshot of chat function
 //screenshot of final chat view
 

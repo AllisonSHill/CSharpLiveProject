@@ -19,7 +19,7 @@ I then added a script to allow the messages to be sent using the enter key.
 
 //script for enter key function
 
-The most challenging part of this story was figuring out how to change the styling of the chat bubbles based on the currently logged in user, so the user would see their chat messages on the right of the module, and a different color than everyone else's chat. 
+The most challenging part of this story was figuring out how to change the styling of the chat bubbles based on the currently logged in user, so the user would see their chat messages on the right of the module, and a different color than everyone else's chat. I ended up using a combination of code within the ChatHub controller as well as the JS. 
 
 //screenshot of chat function
 //screenshot of final chat view

@@ -1,6 +1,6 @@
 # Live Project
 
-### Intro:
+## Intro:
 
 At the end of my time at the Tech Academy, I spent six weeks working with a team of fellow students to develop a full scale MVC/MVVM Web Application in C#. It was structured in two week sprints, during which I focused on both Front-End and Back-End development stories. 
 
@@ -22,19 +22,19 @@ The most challenging part of this story was figuring out how to change the styli
 //screenshot of chat function
 //screenshot of final chat view
 
-### Back End Stories:
+## Back End Stories:
 
-##### Implement ShiftTime Modal
+### Implement ShiftTime Modal
 
 The goal of this story was to write a function for the ShiftTime Modal to save a ShiftTime object and match it with a job that is being created. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. I accomplished this task by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
 
 //screenshot of JobsController create function
 
-##### Job to Schedules Function
+### Job to Schedules Function
 
 From story: We will want to be able to display the schedule items sorted by job. To allow for future functionality to filter these by person or by date, etc, We need a function that takes a specific list of schedule items and builds a dictionary item where the key is the job and the value is the list of schedules for that job. 
 
-##### User-Role Assignment Must Be Required and Save Changes Minor Bug
+### User-Role Assignment Must Be Required and Save Changes Minor Bug
 
 From stories: 
 When the Admin creates a new user (on CreateUserRequest/Create)
@@ -44,7 +44,7 @@ In Manage/EditAccountInfo view page, the save changes button is serving its purp
 
 Each of these stories needed only one line of code to complete them, so I finished them up quickly. 
 
-##### User Manager Clean Up
+### User Manager Clean Up
 
 I chose to work on a story that addressed four separate bugs in the User Manager. This was a board where the site Admin could update user roles and delete users. 
 
@@ -59,7 +59,7 @@ From story:
 
 While working on this story, I ran into some issues that revelealed to the PM that the UserController needed to be refactored. A separate story was created for this, and I took that too because I was familiar with the errors that were currently happening. 
 
-##### Refactor User Controller
+### Refactor User Controller
 
 From story: 
 1) Refactor the _UserList method so it grabs the list of users from the database, and sends that list as the model instead of going through what was the process of creating a UserVM. 

@@ -40,6 +40,17 @@ The goal of this story was to write a function for the ShiftTime Modal to save a
 
 From story: We will want to be able to display the schedule items sorted by job. To allow for future functionality to filter these by person or by date, etc, We need a function that takes a specific list of schedule items and builds a dictionary item where the key is the job and the value is the list of schedules for that job. 
 
+### Back End: Calendar Pull Existing Schedule
+
+From story: The calendar allows for people to set their schedule for time off, but we want it to also populate the events currently scheduled. Create a method within the Calendar Controller that will check for existing schedule items and add them to the calendar. 
+
+//screenshot of ShowScheduleItems method
+
+Optional add-on:
+Change the calendar class so it also references a schedule item, and have the one to one relationship cascade on delete.
+
+//maybe screenshot of DeleteEvent method? Probably not though because its not impressive. Probably delete the whole optional add on as a thing and roll with the required part. 
+
 ### User-Role Assignment Must Be Required and Save Changes Minor Bug
 
 From stories: 

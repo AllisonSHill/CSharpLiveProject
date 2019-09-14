@@ -382,6 +382,15 @@ public void ShowScheduleItems()
 }
 ```
 
+### Back End-ish: Implement Schedule Dictionary
+
+The schedule controller has a AddToDictionary function that takes a list of schedules and returns a dictionary object that has Jobs as the key for associated Schedule items. Have the index of Schedules implement this dictionary function, and change the Index view so it relies on the dictionary model instead of the Schedules model. Then use a foreach Job in model loop to display Job title and Job type, with a list of associated schedule items following that. The schedule items should display name and dates.
+
+
+
+Optional Add on:
+Allow for filtering from the index that will send a modified list of schedules that match the filter to display in the index.
+
 ### User-Role Assignment Must Be Required and Save Changes Minor Bug
 
 From stories: 
@@ -470,6 +479,7 @@ From story:
 3) Determine what if anything the Index Users view is doing, and modify it to simply display a list of all users.
 4) Determine what if anything the isAdminUser is doing. Replace it with the built in Identity method of checking roles.
 5) Add comments to the Users Controller documenting the functions and their purpose, and where they are used.
+
 ```c#
 using ManagementPortal.Models;
 using Microsoft.AspNet.Identity;

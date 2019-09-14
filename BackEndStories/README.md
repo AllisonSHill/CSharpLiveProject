@@ -1,11 +1,17 @@
 # Back End Stories:
 
 [Implement ShiftTime Modal](#-implement-shifttime-modal)
+
 [Job to Schedules Function](#-job-to-schedules-function)
+
 [Calendar Pull Existing Schedule](#-calendar-pull-existing-schedule)
+
 [Implement Schedule Dictionary](#-implement-schedule-dictionary)
+
 [User Role Assignment Must Be Required and Save Changes Minor Bug](#-user-role-assignment-must-be-required-and-save-changes-minor-bug)
+
 [User Manager Clean Up](#-user-manager-clean-up)
+
 [Refactor User Controller](#-refactor-user-controller)
 
 ### Implement ShiftTime Modal

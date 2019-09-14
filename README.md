@@ -6,6 +6,12 @@ At the end of my time at the Tech Academy, I spent six weeks working with a team
 
 ### Front End Stories:
 
+[4973 - Create ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/FrontEndStories#create-shifttime-modal)
+
+[4997 - Chat Box Upgrade](https://github.com/allisonhill00/CSharpLiveProject/tree/master/FrontEndStories#chat-box-upgrade)
+
+[5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](https://github.com/allisonhill00/CSharpLiveProject/tree/master/FrontEndStories#navbar-vital-change-and-vertical-navigation-bar-final-touch)
+
 ### Back End Stories:
 
 [5061 - Implement ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal)

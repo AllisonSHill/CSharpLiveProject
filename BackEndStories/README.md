@@ -1,18 +1,18 @@
 # Back End Stories:
 
-[Implement ShiftTime Modal](#implement-shifttime-modal)
+[5061 - Implement ShiftTime Modal](#implement-shifttime-modal)
 
-[Job to Schedules Function](#job-to-schedules-function)
+[5027 - Job to Schedules Function](#job-to-schedules-function)
 
-[Calendar Pull Existing Schedule](#calendar-pull-existing-schedule)
+[5103 - Calendar Pull Existing Schedule](#calendar-pull-existing-schedule)
 
-[Implement Schedule Dictionary](#implement-schedule-dictionary)
+[5099 - Implement Schedule Dictionary](#implement-schedule-dictionary)
 
-[User Role Assignment Must Be Required and Save Changes Minor Bug](#user-role-assignment-must-be-required-and-save-changes-minor-bug)
+[5085 & 5087 - User Role Assignment Must Be Required and Save Changes Minor Bug](#user-role-assignment-must-be-required-and-save-changes-minor-bug)
 
-[User Manager Clean Up](#user-manager-clean-up)
+[5074 - User Manager Clean Up](#user-manager-clean-up)
 
-[Refactor User Controller](#refactor-user-controller)
+[5106 - Refactor Users Controller](#refactor-users-controller)
 
 ### Implement ShiftTime Modal
 
@@ -232,7 +232,7 @@ I passed in the displayname to the javascript function. I think. This whole sect
 
 While working on this story, I ran into some issues that revelealed to the PM that the UserController needed to be refactored. A separate story was created for this, and I took that too because I was familiar with the errors that were currently happening. 
 
-### Refactor User Controller
+### Refactor Users Controller
 
 From story: 
 1) Refactor the _UserList method so it grabs the list of users from the database, and sends that list as the model instead of going through what was the process of creating a UserVM. 

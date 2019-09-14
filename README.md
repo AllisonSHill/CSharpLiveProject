@@ -470,7 +470,7 @@ From story:
 3) Determine what if anything the Index Users view is doing, and modify it to simply display a list of all users.
 4) Determine what if anything the isAdminUser is doing. Replace it with the built in Identity method of checking roles.
 5) Add comments to the Users Controller documenting the functions and their purpose, and where they are used.
-```
+```c#
 using ManagementPortal.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;

@@ -12,7 +12,7 @@ This is where the intro goes. This is where I write about my overall experience.
 
 ### Create ShiftTime Modal
 
-[Back to Top](#table-of-contents)
+[Back to Top](#front-end-stories)
 
 The first story was the front-end development of a modal on the Job Creation page to add shift times to new jobs as they were created. The request was for the addition of a button in the existing Job Create form, in place of an existing text box to add shift times, that would launch a ShiftTime Modal. The modal wanted to contain a series of text boxes for a default shift time, as well as the ability to enter alternate shift times for every day of the week. The story specifically stated that the modal be a separate partial view, within the Jobs folder. After I completed this story, I took a back end story /Link this here/ for the initial implementation of the modal's functionality. 
 
@@ -111,7 +111,11 @@ The first story was the front-end development of a modal on the Job Creation pag
 </div>
 ```
 
+[Back to Top](#front-end-stories)
+
 ### Chat Box Upgrade
+
+[Back to Top](#front-end-stories)
 
 The third story I worked on was upgrading the site's chat feature. The chat feature was already set up to open on all logged in user's screens when a message was sent, as well as save the messages in a database and populate old messages every time the Chat Modal was launched. I created chat bubbles based on a sample image I was given. 
 
@@ -257,4 +261,12 @@ string me = Context.User.Identity.Name;
 
 //screenshot of final chat view
 
+[Back to Top](#front-end-stories)
+
 ### NavBar Vital Change and Vertical Navigation Bar Final Touch
+
+[Back to Top](#front-end-stories)
+
+CONTENT GOES HERE
+
+[Back to Top](#front-end-stories)

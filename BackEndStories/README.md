@@ -1,6 +1,12 @@
 # Back End Stories:
 
 [Implement ShiftTime Modal](#-implement-shifttime-modal)
+[Job to Schedules Function](#-job-to-schedules-function)
+[Calendar Pull Existing Schedule](#-calendar-pull-existing-schedule)
+[Implement Schedule Dictionary](#-implement-schedule-dictionary)
+[User Role Assignment Must Be Required and Save Changes Minor Bug](#-user-role-assignment-must-be-required-and-save-changes-minor-bug)
+[User Manager Clean Up](#-user-manager-clean-up)
+[Refactor User Controller](#-refactor-user-controller)
 
 ### Implement ShiftTime Modal
 
@@ -55,7 +61,7 @@ private Dictionary<Job, List<Schedule>> AddToDictionary(List<Schedule> schedules
 }
 ```
 
-### Back End: Calendar Pull Existing Schedule
+### Calendar Pull Existing Schedule
 
 From story: The calendar allows for people to set their schedule for time off, but we want it to also populate the events currently scheduled. Create a method within the Calendar Controller that will check for existing schedule items and add them to the calendar. 
 
@@ -131,7 +137,7 @@ public void ShowScheduleItems()
 }
 ```
 
-### Back End-ish: Implement Schedule Dictionary
+### Implement Schedule Dictionary
 
 The schedule controller has a AddToDictionary function that takes a list of schedules and returns a dictionary object that has Jobs as the key for associated Schedule items. Have the index of Schedules implement this dictionary function, and change the Index view so it relies on the dictionary model instead of the Schedules model. Then use a foreach Job in model loop to display Job title and Job type, with a list of associated schedule items following that. The schedule items should display name and dates.
 

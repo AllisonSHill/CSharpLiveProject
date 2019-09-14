@@ -8,16 +8,16 @@ At the end of my time at the Tech Academy, I spent six weeks working with a team
 
 ### Back End Stories:
 
-[Implement ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal)
+[5061 - Implement ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal)
 
-(https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#job-to-schedules-function)
+[5027 - Job to Schedules Function](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#job-to-schedules-function)
 
-(https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#calendar-pull-existing-schedule)
+[5103 - Calendar Pull Existing Schedule](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#calendar-pull-existing-schedule)
 
-(https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#implement-schedule-dictionary)
+[5099 - Implement Schedule Dictionary](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#implement-schedule-dictionary)
 
-(https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#user-role-assignment-must-be-required-and-save-changes-minor-bug)
+[5085 & 5087 - User Role Assignment Must Be Required and Save Changes Minor Bug](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#user-role-assignment-must-be-required-and-save-changes-minor-bug)
 
-(https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#user-manager-clean-up)
+[5074 - User Manager Clean Up](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#user-manager-clean-up)
 
-(https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#refactor-users-controller)
+[5106 - Refactor Users Controller](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#refactor-users-controller)

@@ -1,4 +1,8 @@
-## Front End Stories:
+# Front End Stories
+
+This is where the intro goes. This is where I write about my overall experience. Wheeeee
+
+### Table of Contents:
 
 [4973 - Create ShiftTime Modal](#create-shifttime-modal)
 
@@ -7,6 +11,8 @@
 [5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch)
 
 ### Create ShiftTime Modal
+
+[Return to Table of Contents](#table-of-contents)
 
 The first story was the front-end development of a modal on the Job Creation page to add shift times to new jobs as they were created. The request was for the addition of a button in the existing Job Create form, in place of an existing text box to add shift times, that would launch a ShiftTime Modal. The modal wanted to contain a series of text boxes for a default shift time, as well as the ability to enter alternate shift times for every day of the week. The story specifically stated that the modal be a separate partial view, within the Jobs folder. After I completed this story, I took a back end story /Link this here/ for the initial implementation of the modal's functionality. 
 

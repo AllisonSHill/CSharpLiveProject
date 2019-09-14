@@ -69,6 +69,8 @@ private Dictionary<Job, List<Schedule>> AddToDictionary(List<Schedule> schedules
 }
 ```
 
+[Back to Table of Contents](#back-end-stories)
+
 ### Calendar Pull Existing Schedule
 
 From story: The calendar allows for people to set their schedule for time off, but we want it to also populate the events currently scheduled. Create a method within the Calendar Controller that will check for existing schedule items and add them to the calendar. 
@@ -145,6 +147,8 @@ public void ShowScheduleItems()
 }
 ```
 
+[Back to Table of Contents](#back-end-stories)
+
 ### Implement Schedule Dictionary
 
 The schedule controller has a AddToDictionary function that takes a list of schedules and returns a dictionary object that has Jobs as the key for associated Schedule items. Have the index of Schedules implement this dictionary function, and change the Index view so it relies on the dictionary model instead of the Schedules model. Then use a foreach Job in model loop to display Job title and Job type, with a list of associated schedule items following that. The schedule items should display name and dates.
@@ -153,6 +157,8 @@ The schedule controller has a AddToDictionary function that takes a list of sche
 
 Optional Add on:
 Allow for filtering from the index that will send a modified list of schedules that match the filter to display in the index.
+
+[Back to Table of Contents](#back-end-stories)
 
 ### User-Role Assignment Must Be Required and Save Changes Minor Bug
 
@@ -177,6 +183,8 @@ return RedirectToAction("Index", "Manage");
 ```
 
 Each of these stories needed only one line of code to complete them, so I finished them up quickly. 
+
+[Back to Table of Contents](#back-end-stories)
 
 ### User Manager Clean Up
 
@@ -233,6 +241,8 @@ I passed in the displayname to the javascript function. I think. This whole sect
 4) There should be a cancel option for assigning the role or deleting the user. Make sure there are two buttons on the pop-up message, one for OK and one for Cancel. The cancel one should use a cancel function that does not complete the action.
 
 While working on this story, I ran into some issues that revelealed to the PM that the UserController needed to be refactored. A separate story was created for this, and I took that too because I was familiar with the errors that were currently happening. 
+
+[Back to Table of Contents](#back-end-stories)
 
 ### Refactor Users Controller
 
@@ -389,3 +399,5 @@ namespace ManagementPortal.Controllers
     }
 }
 ```
+
+[Back to Table of Contents](#back-end-stories)

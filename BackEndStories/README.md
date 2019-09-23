@@ -22,6 +22,7 @@ This is where the intro goes.
 
 ### Implement ShiftTime Modal
 
+I did this story right after I created the ShiftTime Modal: [Front End: Create ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#create-shifttime-modal)
 The goal of this story was to write a function for the ShiftTime Modal to save a ShiftTime object and match it with a job that is being created. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. I accomplished this task by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
 
 ```

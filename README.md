@@ -12,6 +12,10 @@ At the end of my time at the Tech Academy, I spent six weeks working with a team
 
 [5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](https://github.com/allisonhill00/CSharpLiveProject/tree/master/FrontEndStories#navbar-vital-change-and-vertical-navigation-bar-final-touch)
 
+[5148 - Implement Contact Us Page](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#implement-contact-us-page)
+
+[5162 - ChatModal Header Bug](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#chatmodal-header-bug)
+
 ### Back End Stories:
 
 [5061 - Implement ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal)
@@ -27,3 +31,5 @@ At the end of my time at the Tech Academy, I spent six weeks working with a team
 [5074 - User Manager Clean Up](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#user-manager-clean-up)
 
 [5106 - Refactor Users Controller](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#refactor-users-controller)
+
+[5148 - Implement Contact Us Page](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#implement-contact-us-page)

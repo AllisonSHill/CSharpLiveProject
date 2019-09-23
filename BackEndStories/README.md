@@ -18,6 +18,8 @@ This is where the intro goes.
 
 [5106 - Refactor Users Controller](#refactor-users-controller)
 
+[5148 - Implement Contact Us Page](#implement-contact-us-page)
+
 ### Implement ShiftTime Modal
 
 The goal of this story was to write a function for the ShiftTime Modal to save a ShiftTime object and match it with a job that is being created. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. I accomplished this task by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
@@ -403,5 +405,133 @@ namespace ManagementPortal.Controllers
     }
 }
 ```
+
+[Back to Table of Contents](#back-end-stories)
+
+### Implement Contact Us Page
+
+The controller: 
+
+```
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ManagementPortal.Models;
+using System.Net.Mail;
+using System.Web.Mvc;
+using System.Text;
+using System.Threading;
+using System.Net;
+namespace ManagementPortal.Controllers
+{
+    public class ContactUsController : Controller
+    {
+        [HttpGet]
+        public ActionResult Index()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Index(ContactUs userInput)
+        {
+            if (ModelState.IsValid)
+            {
+                var toAddress = "liveprojectdummyacct@gmail.com";
+                var fromAddress = userInput.Email.ToString();
+                var subject = userInput.Subject;
+                var message = "<b>Name: </b>" + userInput.Name + "<br>" + "<b>Email: </b>" + userInput.Email + "<br>" + "<b>Telephone: </b>" + userInput.Phone + "<br><br>" + "<b>Message: </b>" + userInput.Message;
+                SendEmail(toAddress, fromAddress, subject, message);
+            }
+            return View();
+        }
+        public void SendEmail(string toAddress, string fromAddress, string subject, string message)
+        {
+            using (MailMessage newMessage = new MailMessage())
+            {
+                newMessage.From = new MailAddress(fromAddress);
+                newMessage.To.Add(new MailAddress(toAddress));
+                newMessage.Subject = subject;
+                newMessage.Body = message.ToString();
+                newMessage.IsBodyHtml = true;
+                        try
+                        {
+                            SmtpClient smtp = new SmtpClient();
+                            smtp.Host = "smtp.gmail.com";
+                            smtp.Port = 587;
+                            smtp.Credentials = new NetworkCredential
+                            ("liveprojectdummyacct@gmail.com", "123qweASD!");
+                            smtp.EnableSsl = true;
+                            smtp.Send(newMessage);
+                            ModelState.Clear();
+                            ViewBag.Message = "Thank you for contacting us! Someone will get back to you shortly. ";
+                        }
+                        catch (SmtpFailedRecipientsException ex)
+                        {
+                            foreach (SmtpFailedRecipientException t in ex.InnerExceptions)
+                            {
+                                var status = t.StatusCode;
+                                if (status == SmtpStatusCode.MailboxBusy ||
+                                    status == SmtpStatusCode.MailboxUnavailable)
+                                {
+                                    Response.Write("Delivery failed - retrying in 5 seconds.");
+                                    Thread.Sleep(5000);
+                                    //resend
+                                    SmtpClient smtp = new SmtpClient();
+                                    smtp.Host = "smtp.gmail.com";
+                                    smtp.Port = 587;
+                                    smtp.Credentials = new NetworkCredential
+                                    ("liveprojectdummyacct@gmail.com", "123qweASD!");
+                                    smtp.EnableSsl = true;
+                                    smtp.Send(newMessage);
+                                }
+                                else
+                                {
+                                    ViewBag.Message = $"Failed to deliver message to " + t.FailedRecipient;
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = ex.ToString();
+                        }
+                        finally
+                        {
+                            newMessage.Dispose();
+                        }
+                    }
+                }
+        }
+    }
+```
+
+The Model:
+
+```    
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+namespace ManagementPortal.Models
+{
+    public class ContactUs
+    {
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+        [Phone]
+        public string Phone { get; set; }
+        public string Subject { get; set; }
+        [Required]
+        public string Message { get; set; }
+    }
+}
+```
+
+This was a full stack story so I also created the view, check that out in the Front End section: 
+[Front end Components](#https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#implement-contact-us-page)
 
 [Back to Table of Contents](#back-end-stories)

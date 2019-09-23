@@ -532,6 +532,6 @@ namespace ManagementPortal.Models
 ```
 
 This was a full stack story so I also created the view, check that out in the Front End section: 
-[Front end Components](#https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#implement-contact-us-page)
+[Front end Components](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#implement-contact-us-page)
 
 [Back to Table of Contents](#back-end-stories)

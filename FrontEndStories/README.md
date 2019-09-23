@@ -8,7 +8,7 @@ This is where the intro goes. This is where I write about my overall experience.
 
 [4997 - Chat Box Upgrade](#chat-box-upgrade)
 
-[5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch) - This needs all content
+[5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch)
 
 [5148 - Implement Contact Us Page](#implement-contact-us-page)
 

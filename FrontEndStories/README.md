@@ -12,7 +12,7 @@ This is where the intro goes. This is where I write about my overall experience.
 
 [5148 - Implement Contact Us Page](#implement-contact-us-page)
 
-[5162 - ChatModal Header Bug](#chat-modal-header-bug)
+[5162 - ChatModal Header Bug](#chatmodal-header-bug)
 
 ### Create ShiftTime Modal
 

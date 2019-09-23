@@ -113,6 +113,8 @@ The first story was the front-end development of a modal on the Job Creation pag
 </div>
 ```
 
+When I finished this story, I chose to implement the Modal's functionality as my next story: [Back End: Implement ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal)
+
 [Back to Table of Contents](#front-end-stories)
 
 ### Chat Box Upgrade

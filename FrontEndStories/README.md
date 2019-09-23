@@ -346,6 +346,6 @@ I also had to add a link to the home page for visitors to the site to access the
 ```
 
 This was a full stack story, to look at the back end functionality I added, check out its other half. 
-[Back end Components](#
+[Back end Components](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#implement-contact-us-page)
 
 [Back to Table of Contents](#front-end-stories)

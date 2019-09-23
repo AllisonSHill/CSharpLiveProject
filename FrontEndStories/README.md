@@ -8,9 +8,11 @@ This is where the intro goes. This is where I write about my overall experience.
 
 [4997 - Chat Box Upgrade](#chat-box-upgrade)
 
-[5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch)
+[5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch) - This needs all content
 
 [5148 - Implement Contact Us Page](#implement-contact-us-page)
+
+[5162 - ChatModal Header Bug](#chat-modal-header-bug)
 
 ### Create ShiftTime Modal
 
@@ -263,7 +265,552 @@ string me = Context.User.Identity.Name;
 
 ### NavBar Vital Change and Vertical Navigation Bar Final Touch
 
-CONTENT GOES HERE
+There was already a navbar, but it didn't have the functionality desired. (SCREEN SHOTS FROM STORY HERE)
+I basically started over with the CSS, using none of the existing styling. 
+
+```
+/************BEGIN LEFT SIDE NAVBAR STYLING**********/
+
+#menu.active {
+    min-width: 230px;
+    max-width: 230px;
+    text-align: left;
+}
+
+#menu {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+    height: auto;
+    left: 0;
+    background-color: white;
+    position: absolute;
+    z-index: 9998;
+    font-family: serif;
+    color: gray;
+    white-space: nowrap;
+}
+
+.fa {
+    padding-right: 15px;
+    padding-left: 10px;
+    color: gray;
+    font-size: 1.5em;
+}
+
+#menu .social {
+    font-size: 1.1em;
+}
+
+#menu.active .copyright {
+    top: 45px;
+    right: 82px;
+}
+
+#menu .copyright {
+    transform: rotate(270deg);
+    position: relative;
+    top: 120px;
+    bottom: 0px;
+    right: 3px;
+}
+
+.copy-icon {
+    font-size: .9em;
+    padding: 5px;
+}
+
+#menu.active .sub-icon {
+    padding-left: 15px;
+}
+
+#menu .sub-icon {
+    padding-left: 5px;
+    font-size: 1.2em;
+    color: gray;
+    cursor: pointer;
+}
+
+/*targets all list items*/
+#menu ul,
+#menu li,
+#menu a {
+    padding: 5px;
+    padding-bottom: 8px;
+    text-decoration: none;
+    list-style-type:none;
+}
+
+/* Hide sub menus */
+#menu ul ul {
+    display: none;
+}
+
+#menu.active ul ul {
+    visibility: visible;
+}
+
+/*hide menu item text in collapsed state*/
+.nav-title {
+    visibility: hidden;
+}
+
+.nav-sub-title {
+    visibility: hidden;
+}
+
+/*main menu items expanded state styling*/
+#menu.active .nav-title {
+    font-size: 1.2em;
+    color: rgb(117, 137, 138);
+    visibility: visible;
+}
+
+.nav-title:hover {
+    color: var(--dark-blue);
+    cursor: pointer;
+}
+
+#menu.active .nav-sub-title {
+    color: rgb(117, 137, 138);
+    font-size: 1.1em;
+    visibility: visible;
+}
+
+.nav-sub-title:hover {
+    color: var(--dark-blue);
+    cursor: pointer;
+}
+
+/*begin styles for open and close icons*/
+#menu.active #dismiss {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    display: block;
+    visibility: visible;
+}
+
+#menu #dismiss {
+    display: none;
+}
+
+#menu #open-menu {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    display: block;
+}
+
+#menu.active #open-menu {
+    display: none;
+}
+/*end styles for open and close icons*/
+
+/*styles for max width 480px*/
+@media screen and (max-width: 480px) {
+    #menu.active {
+        display: none;
+    }
+
+    #menu {
+        min-width: 45px;
+        max-width: 45px;
+        height: auto;
+        text-align: center;
+        padding-top: 8px;
+    }
+
+    .fa {
+        padding-left: 17px;
+        font-size: .8em;
+    }
+
+    #menu .social {
+        font-size: .6em;
+        padding-right: 20px;
+    }
+
+    #menu .copyright {
+        font-size: .5em;
+        position: relative;
+        top: 50px;
+        padding-bottom: 63px;
+        margin-left: 52px;
+        right: 0px;
+    }
+
+    .copy-icon {
+        font-size: .6em;
+        padding: 2px;
+    }
+
+    #menu .sub-icon {
+        padding-left: 17px;
+        font-size: .7em;
+    }
+
+    /*targets all list items*/
+    #menu ul,
+    #menu li,
+    #menu a {
+        padding: 0px;
+        padding-bottom: 2px;
+    }
+
+    #menu #dismiss {
+        display: none;
+    }
+
+    #menu #open-menu {
+        margin-left: -300px;
+        position: absolute;
+        visibility: hidden;
+    }
+}/*end styles for max-width 480px*/
+
+/*styles for max width 768px*/
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    #menu.active {
+        min-width: 170px;
+        max-width: 170px;
+    }
+
+    #menu {
+        min-width: 60px;
+        max-width: 60px;
+        height: auto;
+    }
+
+    .fa {
+        padding-right: 10px;
+        padding-left: 10px;
+        font-size: 1.1em;
+    }
+
+    #menu .social {
+        font-size: .8em;
+    }
+
+    #menu.active .copyright {
+        top: 25px;
+        right: 60px;
+    }
+
+    #menu .copyright {
+        font-size: .7em;
+        top: 80px;
+        padding-bottom: 55px;
+        margin-left: 50px;
+        right: 3px;
+    }
+
+    .copy-icon {
+        font-size: .8em;
+        padding: 0px;
+    }
+
+    #menu.active .sub-icon {
+        padding-left: 15px;
+    }
+
+    #menu .sub-icon {
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: .9em;
+    }
+
+    /*targets all list items*/
+    #menu ul,
+    #menu li,
+    #menu a {
+        padding: 4px;
+        padding-bottom: 1px;
+    }
+
+    /*main menu items expanded state styling*/
+    #menu.active .nav-title {
+        font-size: .9em;
+    }
+
+    #menu.active .nav-sub-title {
+        font-size: .8em;
+    }
+
+    #menu.active #dismiss {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+
+    #menu #open-menu {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+} /*end styles for max-width 768px*/
+
+/*styles for max width 991px*/
+@media screen and (min-width: 769px) and (max-width: 991px) {
+    #menu.active {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #menu {
+        min-width: 70px;
+        max-width: 70px;
+        height: auto;
+    }
+
+    .fa {
+        padding-right: 10px;
+        padding-left: 10px;
+        font-size: 1.3em;
+    }
+
+    #menu .social {
+        font-size: 1em;
+    }
+
+    #menu.active .copyright {
+        top: 40px;
+        right: 70px;
+    }
+
+    #menu .copyright {
+        font-size: .9em;
+        top: 105px;
+        bottom: 0px;
+        right: 0px;
+    }
+
+    .copy-icon {
+        font-size: 1em;
+        padding: 0px;
+    }
+
+    #menu.active .sub-icon {
+        padding-left: 8px;
+    }
+
+    #menu .sub-icon {
+        padding-left: 0px;
+        padding-right: 15px;
+        font-size: 1.2em;
+    }
+
+    /*targets all list items*/
+    #menu ul,
+    #menu li,
+    #menu a {
+        padding: 5px;
+        padding-bottom: 6px;
+    }
+
+    /*main menu items expanded state styling*/
+    #menu.active .nav-title {
+        font-size: 1.1em;
+    }
+
+    #menu.active .nav-sub-title {
+        font-size: 1em;
+    }
+
+    #menu.active #dismiss {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+
+    #menu #open-menu {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+}
+/*end styles for max-width 991px*/
+
+/*************END LEFT NAVBAR STYLING*****************/
+```
+
+I also wrote new javascript functions, instead of opening and closing the navbar I simply toggled the active state. 
+
+What was there before: (MAYBE KEEP TBD)
+```
+// BEGIN NAVBAR HOVER/MOUSE EFFECTS
+
+ //Slide navbar icon with mouse cursor
+//$(document).ready(function () {
+//    $(window).on("mousemove", function (e) {
+//        var yPos = e.pageY - 140;
+//        if (e.pageY > 140) { // Prevents icon from going into header
+//            $(".icon-slider").css("transform", "translateY(" + yPos + "px");
+//        }
+//        else {
+//            $(".icon-slider").css("transform", "translateY(" + 0 + "px");
+//        }
+//    });
+//});
+
+//$(document).ready(function () {
+//    $("#open-menu").on("click", function () {
+//        $(".navbar-collapse").addClass("show");
+//        $(".animated-icon").addClass("open");
+//    });
+//    $("#dismiss").on("click", function () {
+//        $(".navbar-collapse").removeClass("show");
+//        $(".animated-icon").removeClass("open");
+//    });
+//});
+```
+
+What I wrote: (DEFINITELY KEEP)
+
+```
+$(document).ready(function () {
+    $('#open-menu').on('click', function () {
+        $('#menu').toggleClass('active');
+    });
+});
+
+$(document).ready(function () {
+    $('#dismiss').on('click', function () {
+        $('#menu').toggleClass('active');
+    });
+});
+```
+
+I refactored the whole HTML. MAYBE KEEP WHOLE THING MAYBE JUST DO "FROM THIS TO THIS" WITH INFO FROM POST-IT ON DIFFERENT COMPONENTS
+
+```
+@*/*********************NAVbar*******************/*@
+
+<div class="wrapper">
+<nav id="menu">
+    <div id="open-menu">
+        <i class="fa fa-reorder"></i>
+    </div>
+    <div id="dismiss">
+        <i class="fa fa-times"></i>
+    </div>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="active"><a href="@Url.Action("Dashboard","Home")"><i class="fa fa-home"></i><text class="nav-title">Home</text></a></li>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <!-- Create Users - ADMIN ONLY -->
+            <li class="has-sub">
+                <a href="#" title="Users"><i class="fa fa-users"></i><text class="nav-title">Users</text></a>
+                <ul>
+                    <li><a href="@Url.Action("Create", "CreateUserRequest")" title="Add Users"><i class="fa fa-user-plus sub-icon"></i><text class="nav-sub-title">Add Users</text></a></li>
+                    <li><a href="@Url.Action("Index", "CreateUserRequest")" title="Unregistered Users"><i class="fa fa-user-times sub-icon"></i><text class="nav-sub-title">Unregistered Users</text></a></li>
+                    <li><a href="@Url.Action("Index", "Users")" title="All Users"><i class="fa fa-address-book sub-icon"></i><text class="nav-sub-title">All Users</text></a></li>
+                </ul>
+            </li>
+
+            <!-- Jobs - ADMIN ONLY -->
+            <li class="has-sub">
+                <a href="#" title="Jobs"><i class="fa fa-clipboard"></i><text class="nav-title">Jobs</text></a>
+                <ul>
+                    <li><a href="@Url.Action("Index", "Jobs")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                    <li><a href="@Url.Action("ManagedList", "Jobs")" title="Managed List"><i class="fa fa-edit sub-icon"></i><text class="nav-sub-title">Managed List</text></a></li>
+                    <li><a href="@Url.Action("Create", "Jobs")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                </ul>
+            </li>
+
+            <!-- JobSites - ADMIN ONLY -->
+            <li class="has-sub">
+                <a href="#" title="Job Sites"><i class="fa fa-clipboard"></i><text class="nav-title">Job Sites</text></a>
+                <ul>
+                    <li><a href="@Url.Action("Index", "JobSites")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                    <li><a href="@Url.Action("Create", "JobSites")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                </ul>
+            </li>
+        }
+
+        <!--Shift Times, Commented out for story 4808, Need to relocate to manager dashboard when created.
+    Drop down menu items need to be updated to new format 9/17/19-->
+        @*<li class="has-sub">
+        <a href="#"><i class="fa fa-clock-o"></i><text class="nav-title">Shift Times</text></a>
+        <ul>
+            <li>@Html.ActionLink("View All", "Index", new { controller = "ShiftTimes" }, new { @class = "dropdown-item" })</li>
+            <li>@Html.ActionLink("Create New", "Create", new { controller = "ShiftTimes" }, new { @class = "dropdown-item" })</li>
+
+                </ul>
+            </li>*@
+
+        <!--Schedules-->
+        <li class="has-sub">
+            <a href="#" title="Schedules"><i class="fa fa-calendar"></i><text class="nav-title">Schedules</text></a>
+            <ul>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a href="@Url.Action("Index", "Schedules")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                    <li><a href="@Url.Action("Create", "Schedules")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                    <li><a href="@Url.Action("Index", "Calendar")" title="Time Off Calendar"><i class="fa fa-calendar sub-icon"></i><text class="nav-sub-title">Time Off Calendar</text></a></li>
+                }
+                @if (User.IsInRole("Employee"))
+                {
+                    <li><a href="@Url.Action("Index", "Schedules")" title="My Schedule"><i class="fa fa-calendar-check-o sub-icon"></i><text class="nav-sub-title">My Schedule</text></a></li>
+                    //This is currently pointing to the schedule index view - a new view will need to be created that shows only the employee's schedule
+                }
+            </ul>
+        </li>
+
+        <!--News-->
+        <li id="news" class="nav-item dropdown">
+            <a href="#" title="News"><i class="fa fa-newspaper-o"></i><text class="nav-title">News</text></a>
+            <ul>
+                <li><a href="@Url.Action("Index", "CompanyNews")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a href="@Url.Action("Create", "CompanyNews")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                }
+            </ul>
+        </li>
+
+        <!--Chat-->
+        <li class="has-sub">
+            <a href="#" title="Chat"><i class="fa fa-comments"></i><text class="nav-title">Chat</text></a>
+            <ul>
+                <li><a href="@Url.Action("Index", "ChatMessages")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                <li><a href="@Url.Action("Create", "ChatMessages")" title="Send New Message"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Send New Message</text></a></li>
+                <li><i class="fa fa-comments sub-icon" onclick="openChat()" title="Open Messenger"></i><text class="nav-sub-title" onclick="openChat()" title="Open Messenger">Open Messenger</text></li>
+            </ul>
+        </li>
+        <li></li><li></li><li></li>
+        <li>
+            <a href="http://facebook.com" target="_blank" title="Facebook"><i class="fa fa-facebook social"></i></a>
+        </li>
+        <li>
+            <a href="http://twitter.com" target="_blank" title="Twitter"><i class="fa fa-twitter social"></i></a>
+        </li>
+        <li>
+            <a href="http://dribbble.com" target="_blank" title="Dribbble"><i class="fa fa-dribbble social"></i></a>
+        </li>
+        <li>
+            <a href="http://linkedin.com" target="_blank" title="Linkedin"><i class="fa fa-linkedin social"></i></a>
+        </li>
+        <li>
+            <a href="http://instagram.com" target="_blank" title="Instagram"><i class="fa fa-instagram social"></i></a>
+        </li>
+        <li class="copyright"><i class="fa fa-copyright copy-icon"></i>&nbsp;by&nbsp;CompanyName.Inc</li>
+        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+</nav>
+</div>
+    }
+```
 
 [Back to Table of Contents](#front-end-stories)
 
@@ -349,3 +896,19 @@ This was a full stack story, to look at the back end functionality I added, chec
 [Back end Components](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#implement-contact-us-page)
 
 [Back to Table of Contents](#front-end-stories)
+
+### ChatModal Header Bug
+
+This story was a quick fix in the CSS - Just had to update one line. 
+
+```
+#chat-header {
+    color: white;
+    background-color: gray;
+    border-radius: inherit;
+    border: inherit;
+}
+```
+
+[Back to Table of Contents](#front-end-stories)
+

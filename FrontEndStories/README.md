@@ -10,6 +10,8 @@ This is where the intro goes. This is where I write about my overall experience.
 
 [5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch)
 
+[5148 - Implement Contact Us Page](#implement-contact-us-page)
+
 ### Create ShiftTime Modal
 
 The first story was the front-end development of a modal on the Job Creation page to add shift times to new jobs as they were created. The request was for the addition of a button in the existing Job Create form, in place of an existing text box to add shift times, that would launch a ShiftTime Modal. The modal wanted to contain a series of text boxes for a default shift time, as well as the ability to enter alternate shift times for every day of the week. The story specifically stated that the modal be a separate partial view, within the Jobs folder. After I completed this story, I took a back end story /Link this here/ for the initial implementation of the modal's functionality. 
@@ -262,5 +264,88 @@ string me = Context.User.Identity.Name;
 ### NavBar Vital Change and Vertical Navigation Bar Final Touch
 
 CONTENT GOES HERE
+
+[Back to Table of Contents](#front-end-stories)
+
+### Implement Contact Us Page
+
+```
+@model ManagementPortal.Models.ContactUs
+@{
+    ViewBag.Title = "Contact";
+}
+<h2>Contact Us</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal" id="contactContainer">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <label for="Name" class="control-label col-md-2">Name *</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Email" class="control-label col-md-2">Email Address *</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Phone" class="control-label col-md-2">Phone Number</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Subject" class="control-label col-md-2">Subject</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Message" class="control-label col-md-2">Message *</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <p class="col-md-2">*<small> required fields</small></p>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" id="contactUs" value="Send" class="btn-base btn-w-100px" />
+        </div>
+    </div>
+    <div>
+        <div>
+            @if (ViewBag.Message != null)
+            {
+                <div>@ViewBag.Message</div>
+            }
+        </div>
+    </div>
+</div>
+}
+```
+
+I also had to add a link to the home page for visitors to the site to access the contact form. 
+
+```
+<h5 class="card-title">Want to send us a message?</h5>
+					<input type="button" class="home_btn" onclick="location.href='@Url.Action("Index", "ContactUs")'" value="Contact Us">
+				</div>
+			</div>
+			<div class="col-4 ">
+```
+
+This was a full stack story, to look at the back end functionality I added, check out its other half. 
+[Back end Components](#
 
 [Back to Table of Contents](#front-end-stories)

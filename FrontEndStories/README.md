@@ -10,6 +10,8 @@ This is where the intro goes. This is where I write about my overall experience.
 
 [5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch)
 
+[5177 & 5178 - NavBar Icon Updates](#navbar-icon-updates)
+
 [5148 - Implement Contact Us Page](#implement-contact-us-page)
 
 [5162 - ChatModal Header Bug](#chatmodal-header-bug)
@@ -815,6 +817,21 @@ I refactored the whole HTML. MAYBE KEEP WHOLE THING MAYBE JUST DO "FROM THIS TO 
 </div>
     }
 ```
+
+[Back to Table of Contents](#front-end-stories)
+
+### NavBar Icon Updates
+
+These were two mini stories: 
+
+First:
+Jobs and Job Sites on the navigation bar share the same icon which is confusing to users. 
+Please change the nav icon for the Job site with an icon related to map/location.
+
+Second:
+Remove the "Send New Message" from the dropdown list of the Chat nav item, as we aren't gonna use it anymore. 
+
+For the first one I just replaced the icon in question with fa fa-map-marker, for the second I simply deleted the icon from both the shared views _Layout and _Layout.Mobile
 
 [Back to Table of Contents](#front-end-stories)
 

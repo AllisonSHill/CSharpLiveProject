@@ -14,6 +14,8 @@ This is where the intro goes. This is where I write about my overall experience.
 
 [5162 - ChatModal Header Bug](#chatmodal-header-bug)
 
+[5151 - Mobile Friendly Design](#mobile-friendly-design)
+
 ### Create ShiftTime Modal
 
 The first story was the front-end development of a modal on the Job Creation page to add shift times to new jobs as they were created. The request was for the addition of a button in the existing Job Create form, in place of an existing text box to add shift times, that would launch a ShiftTime Modal. The modal wanted to contain a series of text boxes for a default shift time, as well as the ability to enter alternate shift times for every day of the week. The story specifically stated that the modal be a separate partial view, within the Jobs folder. After I completed this story, I took a back end story /Link this here/ for the initial implementation of the modal's functionality. 
@@ -914,3 +916,184 @@ This story was a quick fix in the CSS - Just had to update one line.
 
 [Back to Table of Contents](#front-end-stories)
 
+### Mobile Friendly Design
+
+JobSites Mobile
+```
+@using ManagementPortal.Models
+@using ManagementPortal.Common
+@using ManagementPortal.Helpers
+@using ManagementPortal.Enums
+@model PagedList.IPagedList<ManagementPortal.Models.JobSite>
+@using PagedList.Mvc;
+@*@model IEnumerable<JobSite>*@
+
+@{
+    Layout = "";
+}
+
+<h5>Sort Job Sites By:</h5>
+<center>
+    @Html.ActionLink("SiteName", "Index", new { sortOrder = ViewBag.SiteSortParm, currentFilter = ViewBag.CurrentFilter }) |
+    @Html.ActionLink("Address", "Index", new { sortOrder = ViewBag.AddressSortParm, currentFilter = ViewBag.CurrentFilter }) |
+    @Html.ActionLink("Town", "Index", new { sortOrder = ViewBag.TownSortParm, currentFilter = ViewBag.CurrentFilter }) |
+    @Html.ActionLink("State", "Index", new { sortOrder = ViewBag.StateSortParm, currentFilter = ViewBag.CurrentFilter }) |
+    @Html.ActionLink("Zip", "Index", new { sortOrder = ViewBag.ZipSortParm, currentFilter = ViewBag.CurrentFilter }) |
+</center>
+
+<table class="table table-striped table-light rounded-lg">
+    <tr>
+        <th>
+            Job Sites
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <b class="mobileBold">Site Name: </b>@Html.DisplayFor(modelItem => item.SiteName)<br />
+                <b class="mobileBold">Address: </b>@Html.DisplayFor(modelItem => item.Address)<br />
+                <b class="mobileBold">Town: </b>@Html.DisplayFor(modelItem => item.Town)<br />
+                <b class="mobileBold">State: </b>@item.State.GetDisplayName()<br />
+                <b class="mobileBold">Zip Code: </b>@Html.DisplayFor(modelItem => item.Zip)
+            </td>
+            <td id="mobileJobsEditColumn">
+                @Html.Partial(AnchorButtonGroupHelper.PartialView, AnchorButtonGroupHelper.GetEditDetailsDelete(item.JobSiteID.ToString()))
+            </td>
+        </tr>
+    }
+
+</table>
+```
+
+JobSites Desktop
+```
+@using ManagementPortal.Models
+@using ManagementPortal.Common
+@using ManagementPortal.Helpers
+@using ManagementPortal.Enums
+@model PagedList.IPagedList<ManagementPortal.Models.JobSite>
+@using PagedList.Mvc;
+@*@model IEnumerable<JobSite>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Job Sites</h2>
+<div class="indexContainer">
+    <p>
+        @Html.Partial(AnchorButtonGroupHelper.PartialView, AnchorButtonGroupHelper.GetCreate())
+    </p>
+
+    @using (Html.BeginForm("Index", "Jobsites", FormMethod.Get))
+    {
+        <p>
+            Find by name : @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Search" />
+        </p>
+
+
+    }
+
+    @if (ViewContext.HttpContext.GetOverriddenBrowser().IsMobileDevice)
+    {
+        { Html.RenderAction("_JobSiteIndexMobile", "JobSites"); }
+    }
+    else
+    {
+        <table class="table table-striped table-light rounded-lg">
+            <tr>
+                <th>
+                    @Html.ActionLink("SiteName", "Index", new { sortOrder = ViewBag.SiteSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.SiteName)
+                    </th>*@
+
+                <th>
+                    @Html.ActionLink("Address", "Index", new { sortOrder = ViewBag.AddressSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>*@
+
+                <th>
+                    @Html.ActionLink("Town", "Index", new { sortOrder = ViewBag.TownSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Town)
+                    </th>*@
+
+                <th>
+                    @Html.ActionLink("State", "Index", new { sortOrder = ViewBag.StateSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+
+                @*<th>
+                        @Html.DisplayNameFor(model => model.State)
+                    </th>*@
+
+                <th>
+                    @Html.ActionLink("Zip", "Index", new { sortOrder = ViewBag.ZipSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Zip)
+                    </th>*@
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SiteName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Town)
+                    </td>
+                    <td>
+                        @item.State.GetDisplayName()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Zip)
+                    </td>
+                    <td>
+                        @Html.Partial(AnchorButtonGroupHelper.PartialView, AnchorButtonGroupHelper.GetEditDetailsDelete(item.JobSiteID.ToString()))
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+```
+
+New jQuery chat function
+```
+function openMobileChat() {
+    window.open("/MobileChat/Index#");
+    $('#discussion').animate({
+        scrollTop: $('#discussion').get(0).scrollHeight
+    }, 0);
+}
+
+function closeMobileChat() {
+    window.close();
+    $("#chatIcon").fadeIn("slow");
+}
+```
+
+Besides that, just a bunch of boring CSS. 
+
+[Back to Table of Contents](#front-end-stories)

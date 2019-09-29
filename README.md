@@ -12,9 +12,13 @@ At the end of my time at the Tech Academy, I spent six weeks working with a team
 
 [5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](https://github.com/allisonhill00/CSharpLiveProject/tree/master/FrontEndStories#navbar-vital-change-and-vertical-navigation-bar-final-touch)
 
+[5177 & 5178 - NavBar Icon Updates](https://github.com/allisonhill00/CSharpLiveProject/tree/master/FrontEndStories#navbar-icon-updates)
+
 [5148 - Implement Contact Us Page](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#implement-contact-us-page)
 
 [5162 - ChatModal Header Bug](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#chatmodal-header-bug)
+
+[5151 - Mobile Friendly Design](https://github.com/allisonhill00/CSharpLiveProject/tree/master/FrontEndStories#mobile-friendly-design)
 
 ### Back End Stories:
 

@@ -23,6 +23,9 @@ This is where the intro goes.
 ### Implement ShiftTime Modal
 
 I did this story right after I created the ShiftTime Modal: [Front End: Create ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#create-shifttime-modal)
+
+We need the ShiftTime Modal to save a ShiftTime object and match it with the job that is being created. The first part of this implementation will beto collect the information from the form submission and send it to the ShiftTime controller. 
+
 The goal of this story was to write a function for the ShiftTime Modal to save a ShiftTime object and match it with a job that is being created. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. I accomplished this task by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
 
 ```
@@ -46,6 +49,27 @@ public ActionResult Create([Bind(Include = "JobIb,JobTitle,JobType,Active,Locati
         return RedirectToAction("Index");
     }
  ```
+ 
+ Also added to the _ShiftTimeModal.cshtml partial view to call the controller function.
+ ```
+ <div id="ShiftTimeModal" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog modalShiftTimes" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Modify Shift Times</h4>
+            </div>
+            <div class="modal-body">
+                <div id="formContent">
+                    @using (Html.BeginForm("Create", "ShiftTimes", FormMethod.Post, new { id = "form-shiftTimeAdd" }))
+                    
+                    FORM INFORMATION - SEE FRONT END IF INTERESTED
+                    
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+ ```
+      
 
 [Back to Table of Contents](#back-end-stories)
 
@@ -153,17 +177,209 @@ public void ShowScheduleItems()
     }
 }
 ```
-
+Then added code so the events would delete from the schedule and the calendar when deleted in either place: 
+```
+[HttpPost]
+        public JsonResult DeleteEvent(int eventID)
+        {
+            var status = false;
+            var calEvent = db.CalendarEvents.Where(a => a.EventID == eventID).FirstOrDefault();
+            if (calEvent != null)
+            {
+                if (calEvent.ScheduleId != null)
+                {
+                    //Send schedules to list
+                    var schedules = db.Schedules.ToList();
+                    foreach (var schedule in schedules)
+                    {
+                        if (Convert.ToString(schedule.ScheduleId) == calEvent.ScheduleId) //Check for matching ScheduleId
+                        {
+                            db.Schedules.Remove(schedule);
+                        }
+                    }
+                    db.CalendarEvents.Remove(calEvent);
+                    db.SaveChanges();
+                }
+            }
+            status = true;
+            return new JsonResult { Data = new { status = status } };
+        }
+ ```
+ 
 [Back to Table of Contents](#back-end-stories)
 
 ### Implement Schedule Dictionary
 
 The schedule controller has a AddToDictionary function that takes a list of schedules and returns a dictionary object that has Jobs as the key for associated Schedule items. Have the index of Schedules implement this dictionary function, and change the Index view so it relies on the dictionary model instead of the Schedules model. Then use a foreach Job in model loop to display Job title and Job type, with a list of associated schedule items following that. The schedule items should display name and dates.
 
-
-
 Optional Add on:
 Allow for filtering from the index that will send a modified list of schedules that match the filter to display in the index.
+
+Original code - Schedules Controller (from this):
+```
+public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, ErrorModalVM error = null)
+        {
+            if (error != null)
+            {
+                ViewBag.ErrorModalVm = error;
+            }
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.PersonSortParm = sortOrder == "person_desc" ? "person_asc" : "person_desc";
+            ViewBag.JobSortParm = sortOrder == "job_desc" ? "job_asc" : "job_desc";
+            ViewBag.EndSortParm = sortOrder == "enddate_desc" ? "enddate_asc" : "enddate_desc";
+            ViewBag.StartDateSortParm = String.IsNullOrEmpty(sortOrder) ? "startdate_asc" : "";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var schedules = from s in db.Schedules
+                       select s;
+                       //*****activate the code below after Schedules database is fixed for Search funtionality 7/26/19 - J.R. 
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    schedules = schedules.Where(s => s.Person.Contains(searchString)
+            //                           || s.Job.Contains(searchString));
+     }
+```
+
+To this!:
+```
+    public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, ErrorModalVM error = null)
+        {
+            //var schedules = db.Schedules.ToList();
+            if (error != null)
+            {
+                ViewBag.ErrorModalVm = error;
+            }
+            if (searchString != null)
+            {
+                page = 1; //pagination not active right now, shows all schedules 9/12/19
+            }
+            else
+            {
+                searchString = currentFilter; //get input from search form
+            }
+            ViewBag.CurrentFilter = searchString;
+            var allSchedules = from s in db.Schedules
+                            select s;
+            if (!String.IsNullOrEmpty(searchString)) //filter schedules for search keyword
+            {
+                allSchedules = allSchedules.Where(s => s.Person.FirstName.Contains(searchString)
+                                       || s.Person.LastName.Contains(searchString)
+                                       || s.Job.JobTitle.Contains(searchString)
+                                       || s.Job.JobType.Contains(searchString));
+            }
+            List<Schedule> schedules = new List<Schedule>(allSchedules); //display filtered schedules
+            var dictionary = AddToDictionary(schedules);
+            return View(dictionary);
+        }
+```
+
+This was technically a back end story but I still had to update the view to utilize the dictionary information, and add in the search box functionality: 
+```
+@using ManagementPortal.Common
+@using ManagementPortal.Models
+@model Dictionary<Job, List<Schedule>>
+@{
+    ViewBag.Title = "Schedules";
+}
+
+<div class="IndexBody">
+    <h2>Schedules</h2>
+
+    <p>
+        @Html.Partial(AnchorButtonGroupHelper.PartialView, AnchorButtonGroupHelper.GetCreate())
+    </p>
+    @using (Html.BeginForm("Index", "Schedules", FormMethod.Get))
+
+
+    {
+        <p>
+            @*search box - NOT CONNECTED  - see Schedules Controller 7/26/19 - J.R. *@
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Search" />
+
+            @*show default page button*@
+            <a type="button" class="btn btn-sm" href="@Url.Action("Index")">
+                Show Schedules
+            </a>
+        </p>
+    }
+
+        <table class="table">
+            <tr>
+                <th scope="col">
+                    @Html.ActionLink("Job Title", "Index", new { sortOrder = ViewBag.JobSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th scope="col">
+                    @Html.ActionLink("Job Type", "Index", new { sortOrder = ViewBag.JobTypeSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th scope="col">
+                    @Html.ActionLink("Person", "Index", new { sortOrder = ViewBag.PersonSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th scope="col">
+                    @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th scope="col">
+                    @Html.ActionLink("End Date", "Index", new { sortOrder = ViewBag.EndSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th scope="col"></th>
+            </tr>
+                @foreach (var Job in Model)
+                {
+                    var number = Job.Value.Count() +1;
+                    <tr>
+                        <td rowspan="@number">
+                            @Html.DisplayFor(Model => Job.Key.JobTitle)
+                        </td>
+                        <td rowspan="@number">
+                            @Html.DisplayFor(Model => Job.Key.JobType)
+                        </td>
+                        </tr>
+                    foreach (var schedule in Job.Value)
+                    {
+                        <tr>
+                        <td>
+                            @Html.DisplayFor(Model => schedule.Person.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Model => schedule.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Model => schedule.EndDate)
+                        </td>
+                            </tr>
+                    }
+                }
+
+
+            </table>
+
+    @*@*Pages*@
+    @*<br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+
+    @****************         Modal Error         *****************@
+
+    @if (ViewBag.ErrorModalVM != null)
+    {
+        @Html.Partial("_ErrorModal", (ManagementPortal.ViewModels.ErrorModalVM)ViewBag.ErrorModalVM)
+    }
+
+</div>
+```
 
 [Back to Table of Contents](#back-end-stories)
 
@@ -197,9 +413,87 @@ Each of these stories needed only one line of code to complete them, so I finish
 
 I chose to work on a story that addressed four separate bugs in the User Manager. This was a board where the site Admin could update user roles and delete users. 
 
+EDIT THIS STORY FOR CLARITY. 
+
 From story:
 1) There is sometimes an error message stating that a user is already in a role they are being assigned to. This means that we are not unassigning the old role when changing the role. Add logic to the back end to unassign the user from the previous role before assigning them to the new role.
 
+4) There should be a cancel option for assigning the role or deleting the user. Make sure there are two buttons on the pop-up message, one for OK and one for Cancel. The cancel one should use a cancel function that does not complete the action.
+
+I did this one by enclosing the JS functions in an if/else statement - which added the "ok" and "cancel" buttons to the pop up automatically. (this code is duplicated below in the functions themselves.)
+```
+if (confirm("Warning: Are you sure you want to change this user's role? "))
+```
+
+Update function in User Controller FROM THIS:
+```
+if (user.UserRole != userRole)
+                    {
+                        if (user != null)
+                        {
+                            return Json(new { result = "warning", warning = $"Are you sure you want to change this user's role? " });
+                        }
+                        var oldRole = user.UserRole;
+
+                        user.UserRole = userRole;
+
+                        userManager.AddToRole(user.Id, userRole);
+
+                        if (userManager.IsInRole(user.Id, oldRole))
+                        {
+                            userManager.RemoveFromRole(user.Id, oldRole);
+                        }
+
+                        _context.SaveChanges();
+
+                        return Json(new { result = "success", userName = user.UserName, oldRole = oldRole, newRole = userRole });
+                    }
+```
+TO THIS:
+```
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult UpdateUserRole(string userId, string userRole)
+        {
+            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(userRole))
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+                var user = userManager.FindById(userId);
+                if (user != null)
+                {
+                    if (user.UserRole != userRole)
+                    {
+                        var oldRole = user.UserRole;
+
+                        if (userManager.IsInRole(user.Id, oldRole))
+                        {
+                            userManager.RemoveFromRole(user.Id, oldRole);
+                        }
+                        user.UserRole = userRole;
+                        userManager.AddToRole(user.Id, userRole);
+
+                        _context.SaveChanges();
+
+                        return Json(new { result = "success", displayName = user.DisplayName, oldRole = oldRole, newRole = userRole });
+                    }
+                    else
+                    {
+                        return Json(new { result = "error", message = $"user was already in role: {userRole}" });
+                    }
+                }
+                else
+                {
+                    return Json(new { result = "error", message = $"user id {userId} could not be found in the database" });
+                }
+            }
+            else
+            {
+                return Json(new { result = "error", message = "missing required arguments" });
+            }
+        }
+```
+Javascript: 
 ```
 function updateUserRole(formId) {
 var form = $('#roleForm_' + formId);
@@ -237,15 +531,53 @@ else {
 
 2) The error message for not deleting someone from the database who is on the schedule displays the users GUID instead of their name when alerting the admin they cannot delete this user. Change this to be the user's display name.
 
+For this one I just had to edit the message in the RemoveUser Controller function because the userID and DisplayName were already accessible from that function: 
 ```
-I passed in the displayname to the javascript function. I think. This whole section is messy af I have to figure it out. 
+return Json(new { result = "error", message = $"User {user.DisplayName} is on schedule and could not be deleted." });
 ```
 
 3) The message asking if the admin is sure they want to delete a user displays the username. Change this to the display name.
 
+From the view, I passed in the DisplayName to the JS function instead - accomplished by changing the model from a UserVM (which we ultimately deleted) to the regular ApplicationUser Model that all the other views and functions were referencing to get user info:
+```
+@using (Html.BeginForm("RemoveUser", "Users", FormMethod.Post, new { id = $"removeForm_{i}" }))
+                {
+                    <input type="hidden" name="userId" value="@Model[i].Id" />
+                    @Html.AntiForgeryToken()
+                    <input type="button" onclick="removeUser(@i, '@Model[i].DisplayName')" value="Remove User" />
+                }
+```
+Then I just updated the JS function for the pop up messages (maybe keep tbd):
+```
+//REMOVE USER
+function removeUser(formId, displayName) {
+    var form = $('#removeForm_' + formId);
 
+    if (confirm("Are you sure you want to remove user: " + displayName + "?\nThis action cannot be undone.")) {
+        $.ajax({
+            url: form.attr("action"),
+            type: form.attr("method"),
+            data: form.serialize(),
+            datatype: "application/json",
+            success: function (returnJson) {
+                if (returnJson.result == "success") {
+                    alert("Success! " + displayName + " has been removed...");
+                    $('#userRow_' + formId).remove();
+                }
+                else if (returnJson.result == "error") {
+                    alert("Error: " + returnJson.message);
+                }
+            },
+            error: function () {
 
-4) There should be a cancel option for assigning the role or deleting the user. Make sure there are two buttons on the pop-up message, one for OK and one for Cancel. The cancel one should use a cancel function that does not complete the action.
+            }
+        });
+    }
+    else {
+        return false;
+    }
+}
+```
 
 While working on this story, I ran into some issues that revelealed to the PM that the UserController needed to be refactored. A separate story was created for this, and I took that too because I was familiar with the errors that were currently happening. 
 
@@ -256,7 +588,6 @@ While working on this story, I ran into some issues that revelealed to the PM th
 From story: 
 1) Refactor the _UserList method so it grabs the list of users from the database, and sends that list as the model instead of going through what was the process of creating a UserVM. 
 2) Exclude the UserVM from the project, test to make sure nothing is dependent on it. Remove any dependencies you find, and delete the User VM.
-3) Determine what if anything the Index Users view is doing, and modify it to simply display a list of all users.
 4) Determine what if anything the isAdminUser is doing. Replace it with the built in Identity method of checking roles.
 5) Add comments to the Users Controller documenting the functions and their purpose, and where they are used.
 
@@ -405,6 +736,69 @@ namespace ManagementPortal.Controllers
         }
     }
 }
+```
+
+For this one I also had to update the Index to a super basic table - bc this is a back end story so I don't need to worry about making it pretty: 
+
+3) Determine what if anything the Index Users view is doing, and modify it to simply display a list of all users.
+
+```
+@using ManagementPortal.Models
+
+@model List<ApplicationUser>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Welcome Admin</h2>
+
+<table class="table table-striped table-light rounded-lg">
+    <tr>
+        <th>
+            User Name
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Phone Number
+        </th>
+        <th>
+            Email Address
+        </th>
+        <th>
+            Role
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>
+                @user.UserName
+            </td>
+            <td>
+                @user.FirstName
+            </td>
+            <td>
+                @user.LastName
+            </td>
+            <td>
+                @user.PhoneNumber
+            </td>
+            <td>
+                @user.Email
+            </td>
+            <td>
+                @user.UserRole
+            </td>
+        </tr>
+    }
+</table>
 ```
 
 [Back to Table of Contents](#back-end-stories)

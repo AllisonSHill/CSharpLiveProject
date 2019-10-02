@@ -336,7 +336,7 @@ Here is a snippet of that code as well, the email entry form:
 
 I also added a link to the home page for visitors to the site to access the contact form. 
 
-```
+```html
 <h5 class="card-title">Want to send us a message?</h5>
 <input type="button" class="home_btn" onclick="location.href='@Url.Action("Index", "ContactUs")'" value="Contact Us">
 ```
@@ -354,7 +354,7 @@ The story stated that the chat modal header is supposed to display the name of t
 
 This story was a quick fix in the CSS - Just had to update one line, background-color.
 
-```
+```css
 #chat-header {
     color: white;
     background-color: gray;
@@ -407,14 +407,17 @@ Then I wrote a CSS page to be triggered by the ViewSwitcher. To view my whole mo
 These steps took care of a lot of the styling, and I had already created a mobile navbar in a previous story. I created partial views for all the tables within the site, and called them from the desktop view when mobile was detected. There are tables in the desktop view for Jobsites, Jobs, Schedules, and Users (active, suspended, and unregistered). 
 
 Desktop view for JobSites table:
+
 ![JobSite Desktop](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/jobSites%20Desktop%20table.png)
 
 JobSites table mobile view:
+
 ![JobSite Mobile](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/JobSites%20Mobile%20Table.png)
 
 For example, here is the code for the JobSites Mobile partial view, which was called when in "Mobile View" from the Index. To view the JobSites index, and code for the desktop table, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/JobSites_Desktop_HTML.html). 
 
 JobSites Mobile Partial View:
+
 ```html
 @using ManagementPortal.Models
 @using ManagementPortal.Common
@@ -465,7 +468,9 @@ JobSites Mobile Partial View:
 ```
 
 I had to add a controller function for each partial view. I simply duplicated the Index functions within each controller, and called the partial views instead.
+
 JobSite controller added function: 
+
 ```c#
 public ViewResult _JobSiteIndexMobile(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -476,9 +481,11 @@ public ViewResult _JobSiteIndexMobile(string sortOrder, string currentFilter, st
 There were two styles of tables on the site, the Users List was the other style from the JobSites table. 
 
 Desktop view for Users List:
+
 ![Users Desktop](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/UserList%20Desktop%20table.png)
 
 Users List mobile view:
+
 ![Users Mobile](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/UserList%20Mobile%20table.png)
 
 To view the code for the Users List mobile table, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/UsersListTable_Mobile_HTML.html).

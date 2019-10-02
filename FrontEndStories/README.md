@@ -364,7 +364,7 @@ Once the navbar was functional, I wrote the styling for the two states:
 ```
 
 If you want to see all the CSS I wrote for the navbar, 
-[click here](#https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_CSS.css)
+click here: #https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_CSS.css
 
 After the navbar was functional and looked great on my desktop, I added three additional sizes of media breakpoints, so the navbar would be responsive at all possible screen sizes. That CSS is also included in this file: #https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_CSS.css
 

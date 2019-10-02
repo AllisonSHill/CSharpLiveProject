@@ -397,13 +397,16 @@ Then I wrote a CSS page to be triggered by the ViewSwitcher. To view my whole mo
 
 These steps took care of a lot of the styling, and I had already created a mobile navbar in a previous story. I created partial views for all the tables within the site, and called them from the desktop view when mobile was detected. There are tables in the desktop view for Jobsites, Jobs, Schedules, and Users (active, suspended, and unregistered). 
 
-https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/jobSites%20Desktop%20table.png
+Desktop view for JobSites table:
+![JobSite Desktop](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/jobSites%20Desktop%20table.png)
 
+JobSites table mobile view:
+![JobSite Mobile](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/JobSites%20Mobile%20Table.png)
 
-For example, here is the code for JobSites, the Mobile partial view and the added code to the Index to call it. As well as the controller function to allow that to happen. 
+For example, here is the code for the JobSites Mobile partial view, which was called when in "Mobile View" from the Index. To view the JobSites index, and code for the desktop table, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/JobSites_Desktop_HTML.html). 
 
-JobSites Mobile
-```
+JobSites Mobile Partial View:
+```html
 @using ManagementPortal.Models
 @using ManagementPortal.Common
 @using ManagementPortal.Helpers
@@ -452,378 +455,28 @@ JobSites Mobile
 </table>
 ```
 
-JobSites Desktop
-```
-@using ManagementPortal.Models
-@using ManagementPortal.Common
-@using ManagementPortal.Helpers
-@using ManagementPortal.Enums
-@model PagedList.IPagedList<ManagementPortal.Models.JobSite>
-@using PagedList.Mvc;
-@*@model IEnumerable<JobSite>*@
-
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Job Sites</h2>
-<div class="indexContainer">
-    <p>
-        @Html.Partial(AnchorButtonGroupHelper.PartialView, AnchorButtonGroupHelper.GetCreate())
-    </p>
-
-    @using (Html.BeginForm("Index", "Jobsites", FormMethod.Get))
-    {
-        <p>
-            Find by name : @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-            <input type="submit" value="Search" />
-        </p>
-
-
-    }
-
-    @if (ViewContext.HttpContext.GetOverriddenBrowser().IsMobileDevice)
-    {
-        { Html.RenderAction("_JobSiteIndexMobile", "JobSites"); }
-    }
-    else
-    {
-        <table class="table table-striped table-light rounded-lg">
-            <tr>
-                <th>
-                    @Html.ActionLink("SiteName", "Index", new { sortOrder = ViewBag.SiteSortParm, currentFilter = ViewBag.CurrentFilter })
-                </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.SiteName)
-                    </th>*@
-
-                <th>
-                    @Html.ActionLink("Address", "Index", new { sortOrder = ViewBag.AddressSortParm, currentFilter = ViewBag.CurrentFilter })
-                </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.Address)
-                    </th>*@
-
-                <th>
-                    @Html.ActionLink("Town", "Index", new { sortOrder = ViewBag.TownSortParm, currentFilter = ViewBag.CurrentFilter })
-                </th>
-                @*<th>
-                        @Html.DisplayNameFor(model => model.Town)
-                    </th>*@
-
-                <th>
-                    @Html.ActionLink("State", "Index", new { sortOrder = ViewBag.StateSortParm, currentFilter = ViewBag.CurrentFilter })
-                </th>
-
-                @*<th>
-                        @Html.DisplayNameFor(model => model.State)
-                    </th>*@
-
-                <th>
-                    @Html.ActionLink("Zip", "Index", new { sortOrder = ViewBag.ZipSortParm, currentFilter = ViewBag.CurrentFilter })
-                </th>
-
-                @*<th>
-                        @Html.DisplayNameFor(model => model.Zip)
-                    </th>*@
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SiteName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Town)
-                    </td>
-                    <td>
-                        @item.State.GetDisplayName()
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Zip)
-                    </td>
-                    <td>
-                        @Html.Partial(AnchorButtonGroupHelper.PartialView, AnchorButtonGroupHelper.GetEditDetailsDelete(item.JobSiteID.ToString()))
-                    </td>
-                </tr>
-            }
-
-        </table>
-    }
-        <br />
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-        @Html.PagedListPager(Model, page => Url.Action("Index",
-            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-    </div>
-```
-
+I had to add a controller function for each partial view. I simply duplicated the Index functions within each controller, and called the partial views instead.
 JobSite controller added function: 
-```
+```c#
 public ViewResult _JobSiteIndexMobile(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.SiteSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.AddressSortParm = sortOrder == "Date" ? "address_desc" : "Date";
-            ViewBag.TownSortParm = string.IsNullOrEmpty(sortOrder) ? "town_desc" : "";
-            ViewBag.StateSortParm = string.IsNullOrEmpty(sortOrder) ? "state_desc" : "";
-            ViewBag.ZipSortParm = string.IsNullOrEmpty(sortOrder) ? "zip_desc" : "";
-
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-
-            }
-
-            ViewBag.CurrentFilter = searchString;
-
-            var JobSites = from s in db.JobSites
-                           select s;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                JobSites = JobSites.Where(s => s.SiteName.Contains(searchString)
-                                        || s.Address.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    JobSites = JobSites.OrderByDescending(s => s.SiteName);
-                    break;
-                case "address_desc":
-                    JobSites = JobSites.OrderByDescending(s => s.Address);
-                    break;
-                case "town_desc":
-                    JobSites = JobSites.OrderByDescending(s => s.Town);
-                    break;
-
-                case "state_desc":
-                    JobSites = JobSites.OrderByDescending(s => s.State);
-                    break;
-
-                case "zip_desc":
-                    JobSites = JobSites.OrderByDescending(s => s.Zip);
-                    break;
-
-                default:
-                    JobSites = JobSites.OrderBy(s => s.SiteName);
-                    break;
-
-            }
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(JobSites.ToPagedList(pageNumber, pageSize));
+            //Duplicate of code from _Index function
         }
 ```
-Another example - User List: 
 
-Call from Users Index:
-```
- @if (ViewContext.HttpContext.GetOverriddenBrowser().IsMobileDevice)
-                {
-                    { Html.RenderAction("_UserListMobile", "Users"); }
-                }
-                else
-                {
-                    { Html.RenderAction("_UserList", "Users"); }
-                }
-                @*</div>
-            <div class="card-body" id="new-body">*@
-                @if (ViewContext.HttpContext.GetOverriddenBrowser().IsMobileDevice)
-                {
-                    { Html.RenderAction("_SuspendedUsersMobile", "Users"); }
-                }
-                else
-                {
-                    { Html.RenderAction("_SuspendedUsers", "Users"); }
-                }
-```
+There were two styles of tables on the site, the Users List was the other style from the JobSites table. 
 
-Mobile partial view _UserListMobile:
-```
-@using ManagementPortal.Common
-@using ManagementPortal.Models
-@using Microsoft.AspNet.Identity
+Desktop view for Users List:
+![Users Desktop](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/UserList%20Desktop%20table.png)
 
-@model List<ApplicationUser>
+Users List mobile view:
+![Users Mobile](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/UserList%20Mobile%20table.png)
 
-@{
-    var selectListItems = UserRoleDropDown.GetStatesSelectListItems();
-}
+To view the code for the Users List mobile table, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/UsersListTable_Mobile_HTML.html).
 
-<div class="card card-shadow mb-3">
-    <div class="card-header">
-        <h4>Active Users</h4>
-    </div>
-    <div class="card-body">
-        <table class="table table-striped table-light rounded-lg">
-            <tr>
-                <th>
-                    User Information
-                </th>
-                <th>
-                    Edit User
-                </th>
-            </tr>
+The last element I had to address was the chat. For the mobile site, it was requested that the chat open in a different window, and fill that window, while maintaining the same functionality. To view the HTML and CSS I added to accomplish this, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/MobileChat_Full_HTML.html).
 
-            @for (var i = 0; i < Model.Count; i++)
-            {
-                if (!Model[i].Suspended)
-                {
-            <tr id="userRow_@i">
-                <td>
-                    <b class="mobileBold">User: </b>@Html.DisplayFor(modelItem => Model[i].UserName)<br />
-                    <b class="mobileBold">First: </b>@Html.DisplayFor(modelItem => Model[i].FirstName)<br />
-                    <b class="mobileBold">Last: </b>@Html.DisplayFor(modelItem => Model[i].LastName)<br />
-                    <b class="mobileBold">Phone: </b><a href="tel:+@Model[i].PhoneNumber"> @Html.DisplayFor(modelItem => Model[i].PhoneNumber)</a><br />
-                </td>
-                <td id="mobileEditColumn">
-                    @if (Model[i].Id != User.Identity.GetUserId())
-                    {
-                        <!-- REMOVE USER BUTTON -->
-                        using (Html.BeginForm("RemoveUser", "Users", FormMethod.Post, new { id = $"removeForm_{i}" }))
-                        {
-                            <input type="hidden" name="userId" value="@Model[i].Id" />
-                            @Html.AntiForgeryToken()
-                            <button type="submit" id="mobileTableBtn" onclick="removeUser(@i, '@Model[i].DisplayName')"><i class="fa fa-trash"></i></button>
-                        }
-                        <!--SUSPEND USER-->
-                        using (Html.BeginForm("SuspendUser", "Users", FormMethod.Post, new { id = $"suspendForm_{i}" }))
-                        { 
-                            @Html.AntiForgeryToken()
-                            <button type="submit" id="mobileTableBtn" onclick="suspendUser(@i, '@Model[i].DisplayName')"><i class="fa fa-user-times"></i></button>
-                            @Html.CheckBoxFor(Model => Model[i].Suspended, new { Name = "suspended" })
-                            <input type="hidden" id="mobileCheckbox" name="userId" value="@Model[i].Id" />
-
-                        }
-                        <!-- USER ROLE DROPDOWN -->
-                        using (Html.BeginForm("UpdateUserRole", "Users", FormMethod.Post, new { id = $"roleForm_{i}" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <button type="submit" id="mobileTableBtn" onclick="updateUserRole(@i)" value="Update User Role"><i class="fa fa-pencil-square-o"></i></button>
-                            <br />
-                            @Html.DropDownList("userRole", new SelectList(selectListItems, "Value", "Text", Model[i].UserRole), new { @style = "font-size:14px;" })
-                            <input type="hidden" id="mobileTableDropdown" name="userId" value="@Model[i].Id" />
-                        }
-                }
-                </td>
-            </tr>
-                }
-
-            }
-        </table>
-
-    </div>
-</div>
-```
-
-I asked the PM and she requested that the chat open in a separate page, and be full screen in that window. 
-
-Chat View: 
-```
-<!--SignalR is working just needs user signed in-->
-<!-- Chat Modal -->
-@using Microsoft.AspNet.Identity
-@using ManagementPortal.Models
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewBag.Title</title>
-    <style>
-        #header-nav {
-            display: none;
-        }
-        #menu {
-            display:none;
-        }
-        .view-switcher {
-            display: none;
-        }
-        #overlay {
-            background-color: rgba(255, 255, 255, .8);
-        }
-        footer {
-            display: none;
-        }
-        #chat-modal {
-            display: none;
-        }
-        .container {
-            display: none;
-        }
-    </style>
-    <script>
-        $(document).ready(function () {
-            $.mobile.ajaxEnabled = true;
-        });
-    </script>
-</head>
-<body>
-    @RenderPage("../Shared/MobileChat.cshtml")
-</body>
-</html>
-```
-```
-<!--SignalR is working just needs user signed in-->
-<!-- Chat Modal -->
-@using Microsoft.AspNet.Identity
-@using ManagementPortal.Models
-@*<div id="chat-modal" class="modal modal-right" tabindex="-1" role="dialog" aria-hidden="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">*@
-@*<div id="mobileChat" class="" tabindex="" role="">
-    <div class="" role="">
-        <div class="">*@
-<div id="messageContainer">
-            <div id="chat-header" class="">
-                <h4 class="mobileChatTitle">
-                    @ViewData["DisplayName"] <!---So what this does is it gets the user's name-->
-                </h4>
-                <button id="close-icon" type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeMobileChat()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div id="discussion">
-                <form class="chat-body">
-                    <ul class="overflow-auto" id="discussionBubbles"></ul>
-                </form>
-            </div>
-
-        @*</div>
-    </div>
-</div>*@
-            <div id="messageBox">
-<textarea id="message-box" placeholder="Type a message here..." required></textarea>
-                <button id="send-message" type="button" class="btn" onclick="">Send</button>
-            </div>
-    </div>
-```
-
-New jQuery chat function
-```
-function openMobileChat() {
-    window.open("/MobileChat/Index#");
-    $('#discussion').animate({
-        scrollTop: $('#discussion').get(0).scrollHeight
-    }, 0);
-}
-
-function closeMobileChat() {
-    window.close();
-    $("#chatIcon").fadeIn("slow");
-}
-```
+Mobile Chat end result:
+![Mobile Chat](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/Chat%20mobile.png)
 
 [Back to Table of Contents](#front-end-stories)

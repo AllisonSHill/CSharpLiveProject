@@ -87,7 +87,9 @@ When I finished this story, I chose to implement the Shift Time modal's function
 
 ### Chat Box Upgrade
 
-The third story I worked on was upgrading the site's chat feature. The chat feature was already set up to open on all logged in user's screens when a message was sent, as well as save the messages in a database and populate old messages every time the Chat Modal was launched. I created chat bubbles based on a sample image I was given. 
+The Management Portal site already had a pretty good chat feature, from the work of previous students. The chat feature was set up and functional to open on all logged in user's screens when a message was sent, as well as save the messages in a database and populate old messages every time the chat modal was launched. The story I took was an upgrade to the design. The client wanted chat bubbles designed in a specific style, and the story included a picture for example: 
+
+![Example Chat Bubbles](https://github.com/allisonhill00/pictures/blob/master/4997%20ChatBox%20Upgrade/example%20bubbles.png)
 
 //screenshot of sample image
 

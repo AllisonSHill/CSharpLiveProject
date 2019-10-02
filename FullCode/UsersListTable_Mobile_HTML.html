@@ -1,0 +1,74 @@
+@using ManagementPortal.Common
+@using ManagementPortal.Models
+@using Microsoft.AspNet.Identity
+
+@model List<ApplicationUser>
+
+@{
+    var selectListItems = UserRoleDropDown.GetStatesSelectListItems();
+}
+
+<div class="card card-shadow mb-3">
+    <div class="card-header">
+        <h4>Active Users</h4>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped table-light rounded-lg">
+            <tr>
+                <th>
+                    User Information
+                </th>
+                <th>
+                    Edit User
+                </th>
+            </tr>
+
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                if (!Model[i].Suspended)
+                {
+            <tr id="userRow_@i">
+                <td>
+                    <b class="mobileBold">User: </b>@Html.DisplayFor(modelItem => Model[i].UserName)<br />
+                    <b class="mobileBold">First: </b>@Html.DisplayFor(modelItem => Model[i].FirstName)<br />
+                    <b class="mobileBold">Last: </b>@Html.DisplayFor(modelItem => Model[i].LastName)<br />
+                    <b class="mobileBold">Phone: </b><a href="tel:+@Model[i].PhoneNumber"> @Html.DisplayFor(modelItem => Model[i].PhoneNumber)</a><br />
+                </td>
+                <td id="mobileEditColumn">
+                    @if (Model[i].Id != User.Identity.GetUserId())
+                    {
+                        <!-- REMOVE USER BUTTON -->
+                        using (Html.BeginForm("RemoveUser", "Users", FormMethod.Post, new { id = $"removeForm_{i}" }))
+                        {
+                            <input type="hidden" name="userId" value="@Model[i].Id" />
+                            @Html.AntiForgeryToken()
+                            <button type="submit" id="mobileTableBtn" onclick="removeUser(@i, '@Model[i].DisplayName')"><i class="fa fa-trash"></i></button>
+                        }
+                        <!--SUSPEND USER-->
+                        using (Html.BeginForm("SuspendUser", "Users", FormMethod.Post, new { id = $"suspendForm_{i}" }))
+                        { 
+                            @Html.AntiForgeryToken()
+                            <button type="submit" id="mobileTableBtn" onclick="suspendUser(@i, '@Model[i].DisplayName')"><i class="fa fa-user-times"></i></button>
+                            @Html.CheckBoxFor(Model => Model[i].Suspended, new { Name = "suspended" })
+                            <input type="hidden" id="mobileCheckbox" name="userId" value="@Model[i].Id" />
+
+                        }
+                        <!-- USER ROLE DROPDOWN -->
+                        using (Html.BeginForm("UpdateUserRole", "Users", FormMethod.Post, new { id = $"roleForm_{i}" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" id="mobileTableBtn" onclick="updateUserRole(@i)" value="Update User Role"><i class="fa fa-pencil-square-o"></i></button>
+                            <br />
+                            @Html.DropDownList("userRole", new SelectList(selectListItems, "Value", "Text", Model[i].UserRole), new { @style = "font-size:14px;" })
+                            <input type="hidden" id="mobileTableDropdown" name="userId" value="@Model[i].Id" />
+                        }
+                }
+                </td>
+            </tr>
+                }
+
+            }
+        </table>
+
+    </div>
+</div>

@@ -38,7 +38,7 @@ At the end of my time at the Tech Academy, I spent six weeks working with a team
 
 [5148 - Implement Contact Us Page](https://github.com/allisonhill00/CSharpLiveProject/blob/master/BackEndStories/README.md#implement-contact-us-page)
 
-### Misc Bug Fix
+### Bonus Project: Bug Fix
 
 The PM of the Management Portal project was also the PM of another project, that was already delivered to the customer and live online. That app encountered a bug which crashed the site, so she asked me to address it in between stories on the Management Portal project. 
 

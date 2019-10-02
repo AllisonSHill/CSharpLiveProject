@@ -1,0 +1,118 @@
+@*/*********************NAVbar*******************/*@
+
+<div class="wrapper">
+<nav id="menu">
+    <div id="open-menu">
+        <i class="fa fa-reorder"></i>
+    </div>
+    <div id="dismiss">
+        <i class="fa fa-times"></i>
+    </div>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="active"><a href="@Url.Action("Dashboard","Home")"><i class="fa fa-home"></i><text class="nav-title">Home</text></a></li>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <!-- Create Users - ADMIN ONLY -->
+            <li class="has-sub">
+                <a href="#" title="Users"><i class="fa fa-users"></i><text class="nav-title">Users</text></a>
+                <ul>
+                    <li><a href="@Url.Action("Create", "CreateUserRequest")" title="Add Users"><i class="fa fa-user-plus sub-icon"></i><text class="nav-sub-title">Add Users</text></a></li>
+                    <li><a href="@Url.Action("Index", "CreateUserRequest")" title="Unregistered Users"><i class="fa fa-user-times sub-icon"></i><text class="nav-sub-title">Unregistered Users</text></a></li>
+                    <li><a href="@Url.Action("Index", "Users")" title="All Users"><i class="fa fa-address-book sub-icon"></i><text class="nav-sub-title">All Users</text></a></li>
+                </ul>
+            </li>
+
+            <!-- Jobs - ADMIN ONLY -->
+            <li class="has-sub">
+                <a href="#" title="Jobs"><i class="fa fa-clipboard"></i><text class="nav-title">Jobs</text></a>
+                <ul>
+                    <li><a href="@Url.Action("Index", "Jobs")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                    <li><a href="@Url.Action("ManagedList", "Jobs")" title="Managed List"><i class="fa fa-edit sub-icon"></i><text class="nav-sub-title">Managed List</text></a></li>
+                    <li><a href="@Url.Action("Create", "Jobs")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                </ul>
+            </li>
+
+            <!-- JobSites - ADMIN ONLY -->
+            <li class="has-sub">
+                <a href="#" title="Job Sites"><i class="fa fa-clipboard"></i><text class="nav-title">Job Sites</text></a>
+                <ul>
+                    <li><a href="@Url.Action("Index", "JobSites")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                    <li><a href="@Url.Action("Create", "JobSites")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                </ul>
+            </li>
+        }
+
+        <!--Shift Times, Commented out for story 4808, Need to relocate to manager dashboard when created.
+    Drop down menu items need to be updated to new format 9/17/19-->
+        @*<li class="has-sub">
+        <a href="#"><i class="fa fa-clock-o"></i><text class="nav-title">Shift Times</text></a>
+        <ul>
+            <li>@Html.ActionLink("View All", "Index", new { controller = "ShiftTimes" }, new { @class = "dropdown-item" })</li>
+            <li>@Html.ActionLink("Create New", "Create", new { controller = "ShiftTimes" }, new { @class = "dropdown-item" })</li>
+
+                </ul>
+            </li>*@
+
+        <!--Schedules-->
+        <li class="has-sub">
+            <a href="#" title="Schedules"><i class="fa fa-calendar"></i><text class="nav-title">Schedules</text></a>
+            <ul>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a href="@Url.Action("Index", "Schedules")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                    <li><a href="@Url.Action("Create", "Schedules")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                    <li><a href="@Url.Action("Index", "Calendar")" title="Time Off Calendar"><i class="fa fa-calendar sub-icon"></i><text class="nav-sub-title">Time Off Calendar</text></a></li>
+                }
+                @if (User.IsInRole("Employee"))
+                {
+                    <li><a href="@Url.Action("Index", "Schedules")" title="My Schedule"><i class="fa fa-calendar-check-o sub-icon"></i><text class="nav-sub-title">My Schedule</text></a></li>
+                    //This is currently pointing to the schedule index view - a new view will need to be created that shows only the employee's schedule
+                }
+            </ul>
+        </li>
+
+        <!--News-->
+        <li id="news" class="nav-item dropdown">
+            <a href="#" title="News"><i class="fa fa-newspaper-o"></i><text class="nav-title">News</text></a>
+            <ul>
+                <li><a href="@Url.Action("Index", "CompanyNews")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a href="@Url.Action("Create", "CompanyNews")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
+                }
+            </ul>
+        </li>
+
+        <!--Chat-->
+        <li class="has-sub">
+            <a href="#" title="Chat"><i class="fa fa-comments"></i><text class="nav-title">Chat</text></a>
+            <ul>
+                <li><a href="@Url.Action("Index", "ChatMessages")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                <li><a href="@Url.Action("Create", "ChatMessages")" title="Send New Message"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Send New Message</text></a></li>
+                <li><i class="fa fa-comments sub-icon" onclick="openChat()" title="Open Messenger"></i><text class="nav-sub-title" onclick="openChat()" title="Open Messenger">Open Messenger</text></li>
+            </ul>
+        </li>
+        <li></li><li></li><li></li>
+        <li>
+            <a href="http://facebook.com" target="_blank" title="Facebook"><i class="fa fa-facebook social"></i></a>
+        </li>
+        <li>
+            <a href="http://twitter.com" target="_blank" title="Twitter"><i class="fa fa-twitter social"></i></a>
+        </li>
+        <li>
+            <a href="http://dribbble.com" target="_blank" title="Dribbble"><i class="fa fa-dribbble social"></i></a>
+        </li>
+        <li>
+            <a href="http://linkedin.com" target="_blank" title="Linkedin"><i class="fa fa-linkedin social"></i></a>
+        </li>
+        <li>
+            <a href="http://instagram.com" target="_blank" title="Instagram"><i class="fa fa-instagram social"></i></a>
+        </li>
+        <li class="copyright"><i class="fa fa-copyright copy-icon"></i>&nbsp;by&nbsp;CompanyName.Inc</li>
+        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+</nav>
+</div>
+    }

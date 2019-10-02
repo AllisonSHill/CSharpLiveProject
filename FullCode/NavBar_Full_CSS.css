@@ -1,3 +1,46 @@
+body {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    /*my adds **/
+    background-image: url('images/bgPattern.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin: auto;
+    padding-left: 80px; /*make space for collapsed navbar*/
+}
+
+/*override body padding to make header be full width*/
+#header-nav {
+    margin-left: -80px;
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        padding-left: 45px
+    }
+    #header-nav {
+        margin-left: -45px;
+    }
+}
+
+@media screen and (min-width: 481) and (max-width: 768px) {
+    body {
+        padding-left: 60px
+    }
+    #header-nav {
+        margin-left: -60px;
+    }
+}
+
+@media screen and (min-width: 769) and (max-width: 991px) {
+    body {
+        padding-left: 70px
+    }
+    #header-nav {
+        margin-left: -70px;
+    }
+}
+
 /************BEGIN LEFT SIDE NAVBAR STYLING**********/
 
 #menu.active {

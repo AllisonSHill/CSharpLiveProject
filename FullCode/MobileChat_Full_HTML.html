@@ -1,0 +1,71 @@
+<!-- Code to launch the chat in a separate window, and remove styling from that window -->
+
+@using Microsoft.AspNet.Identity
+@using ManagementPortal.Models
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <style>
+        #header-nav {
+            display: none;
+        }
+        #menu {
+            display:none;
+        }
+        .view-switcher {
+            display: none;
+        }
+        #overlay {
+            background-color: rgba(255, 255, 255, .8);
+        }
+        footer {
+            display: none;
+        }
+        #chat-modal {
+            display: none;
+        }
+        .container {
+            display: none;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $.mobile.ajaxEnabled = true;
+        });
+    </script>
+</head>
+<body>
+    @RenderPage("../Shared/MobileChat.cshtml")
+</body>
+</html>
+
+
+
+<!-- Mobile chat view -->
+
+@using Microsoft.AspNet.Identity
+@using ManagementPortal.Models
+
+<div id="messageContainer">
+            <div id="chat-header" class="">
+                <h4 class="mobileChatTitle">
+                    @ViewData["DisplayName"] <!---Get the user's name-->
+                </h4>
+                <button id="close-icon" type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeMobileChat()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="discussion">
+                <form class="chat-body">
+                    <ul class="overflow-auto" id="discussionBubbles"></ul>
+                </form>
+            </div>
+
+            <div id="messageBox">
+			<textarea id="message-box" placeholder="Type a message here..." required></textarea>
+                <button id="send-message" type="button" class="btn" onclick="">Send</button>
+            </div>
+    </div>

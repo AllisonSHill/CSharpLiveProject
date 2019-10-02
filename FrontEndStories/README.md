@@ -286,9 +286,11 @@ Here's a little snippet of the CSS, if you don't want to view the whole thing:
 ```
 
 Finished Navbar:
+
 ![Navbar Inactive](https://github.com/allisonhill00/pictures/blob/master/Left%20side%20navbar/Desktop%20Inactive.png)
 
 Finished Navbar active state:
+
 ![Navbar Active](https://github.com/allisonhill00/pictures/blob/master/Left%20side%20navbar/Desktop%20Active%20w%20users.png)
 
 After the navbar was functional and looked great on my desktop, I added three additional sizes of media breakpoints, so the navbar would be responsive at all possible screen sizes. That CSS is also included in the stylesheet linked above, or [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_CSS.css).

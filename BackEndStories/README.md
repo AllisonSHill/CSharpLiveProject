@@ -1,6 +1,9 @@
 # Back End Stories:
 
-This is where the intro goes.
+Its tough writing spin to make me sound employable. 
+I learned how to enter into an existing project and figure out how it worked, working backwards.
+I was intimidated by back end stories when I started the project, but I ended up having a really good time working through functions.
+Writing functions from scratch might be easier than refactoring.
 
 ### Table of Contents:
 

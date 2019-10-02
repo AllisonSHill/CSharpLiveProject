@@ -1,0 +1,371 @@
+/************BEGIN LEFT SIDE NAVBAR STYLING**********/
+
+#menu.active {
+    min-width: 230px;
+    max-width: 230px;
+    text-align: left;
+}
+
+#menu {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+    height: auto;
+    left: 0;
+    background-color: white;
+    position: absolute;
+    z-index: 9998;
+    font-family: serif;
+    color: gray;
+    white-space: nowrap;
+}
+
+.fa {
+    padding-right: 15px;
+    padding-left: 10px;
+    color: gray;
+    font-size: 1.5em;
+}
+
+#menu .social {
+    font-size: 1.1em;
+}
+
+#menu.active .copyright {
+    top: 45px;
+    right: 82px;
+}
+
+#menu .copyright {
+    transform: rotate(270deg);
+    position: relative;
+    top: 120px;
+    bottom: 0px;
+    right: 3px;
+}
+
+.copy-icon {
+    font-size: .9em;
+    padding: 5px;
+}
+
+#menu.active .sub-icon {
+    padding-left: 15px;
+}
+
+#menu .sub-icon {
+    padding-left: 5px;
+    font-size: 1.2em;
+    color: gray;
+    cursor: pointer;
+}
+
+/*targets all list items*/
+#menu ul,
+#menu li,
+#menu a {
+    padding: 5px;
+    padding-bottom: 8px;
+    text-decoration: none;
+    list-style-type:none;
+}
+
+/* Hide sub menus */
+#menu ul ul {
+    display: none;
+}
+
+#menu.active ul ul {
+    visibility: visible;
+}
+
+/*hide menu item text in collapsed state*/
+.nav-title {
+    visibility: hidden;
+}
+
+.nav-sub-title {
+    visibility: hidden;
+}
+
+/*main menu items expanded state styling*/
+#menu.active .nav-title {
+    font-size: 1.2em;
+    color: rgb(117, 137, 138);
+    visibility: visible;
+}
+
+.nav-title:hover {
+    color: var(--dark-blue);
+    cursor: pointer;
+}
+
+#menu.active .nav-sub-title {
+    color: rgb(117, 137, 138);
+    font-size: 1.1em;
+    visibility: visible;
+}
+
+.nav-sub-title:hover {
+    color: var(--dark-blue);
+    cursor: pointer;
+}
+
+/*begin styles for open and close icons*/
+#menu.active #dismiss {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    display: block;
+    visibility: visible;
+}
+
+#menu #dismiss {
+    display: none;
+}
+
+#menu #open-menu {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    display: block;
+}
+
+#menu.active #open-menu {
+    display: none;
+}
+/*end styles for open and close icons*/
+
+/*styles for max width 480px*/
+@media screen and (max-width: 480px) {
+    #menu.active {
+        display: none;
+    }
+
+    #menu {
+        min-width: 45px;
+        max-width: 45px;
+        height: auto;
+        text-align: center;
+        padding-top: 8px;
+    }
+
+    .fa {
+        padding-left: 17px;
+        font-size: .8em;
+    }
+
+    #menu .social {
+        font-size: .6em;
+        padding-right: 20px;
+    }
+
+    #menu .copyright {
+        font-size: .5em;
+        position: relative;
+        top: 50px;
+        padding-bottom: 63px;
+        margin-left: 52px;
+        right: 0px;
+    }
+
+    .copy-icon {
+        font-size: .6em;
+        padding: 2px;
+    }
+
+    #menu .sub-icon {
+        padding-left: 17px;
+        font-size: .7em;
+    }
+
+    /*targets all list items*/
+    #menu ul,
+    #menu li,
+    #menu a {
+        padding: 0px;
+        padding-bottom: 2px;
+    }
+
+    #menu #dismiss {
+        display: none;
+    }
+
+    #menu #open-menu {
+        margin-left: -300px;
+        position: absolute;
+        visibility: hidden;
+    }
+}/*end styles for max-width 480px*/
+
+/*styles for max width 768px*/
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    #menu.active {
+        min-width: 170px;
+        max-width: 170px;
+    }
+
+    #menu {
+        min-width: 60px;
+        max-width: 60px;
+        height: auto;
+    }
+
+    .fa {
+        padding-right: 10px;
+        padding-left: 10px;
+        font-size: 1.1em;
+    }
+
+    #menu .social {
+        font-size: .8em;
+    }
+
+    #menu.active .copyright {
+        top: 25px;
+        right: 60px;
+    }
+
+    #menu .copyright {
+        font-size: .7em;
+        top: 80px;
+        padding-bottom: 55px;
+        margin-left: 50px;
+        right: 3px;
+    }
+
+    .copy-icon {
+        font-size: .8em;
+        padding: 0px;
+    }
+
+    #menu.active .sub-icon {
+        padding-left: 15px;
+    }
+
+    #menu .sub-icon {
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: .9em;
+    }
+
+    /*targets all list items*/
+    #menu ul,
+    #menu li,
+    #menu a {
+        padding: 4px;
+        padding-bottom: 1px;
+    }
+
+    /*main menu items expanded state styling*/
+    #menu.active .nav-title {
+        font-size: .9em;
+    }
+
+    #menu.active .nav-sub-title {
+        font-size: .8em;
+    }
+
+    #menu.active #dismiss {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+
+    #menu #open-menu {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+} /*end styles for max-width 768px*/
+
+/*styles for max width 991px*/
+@media screen and (min-width: 769px) and (max-width: 991px) {
+    #menu.active {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #menu {
+        min-width: 70px;
+        max-width: 70px;
+        height: auto;
+    }
+
+    .fa {
+        padding-right: 10px;
+        padding-left: 10px;
+        font-size: 1.3em;
+    }
+
+    #menu .social {
+        font-size: 1em;
+    }
+
+    #menu.active .copyright {
+        top: 40px;
+        right: 70px;
+    }
+
+    #menu .copyright {
+        font-size: .9em;
+        top: 105px;
+        bottom: 0px;
+        right: 0px;
+    }
+
+    .copy-icon {
+        font-size: 1em;
+        padding: 0px;
+    }
+
+    #menu.active .sub-icon {
+        padding-left: 8px;
+    }
+
+    #menu .sub-icon {
+        padding-left: 0px;
+        padding-right: 15px;
+        font-size: 1.2em;
+    }
+
+    /*targets all list items*/
+    #menu ul,
+    #menu li,
+    #menu a {
+        padding: 5px;
+        padding-bottom: 6px;
+    }
+
+    /*main menu items expanded state styling*/
+    #menu.active .nav-title {
+        font-size: 1.1em;
+    }
+
+    #menu.active .nav-sub-title {
+        font-size: 1em;
+    }
+
+    #menu.active #dismiss {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+
+    #menu #open-menu {
+        width: 35px;
+        height: 35px;
+        top: 8px;
+        left: 10px;
+    }
+}
+/*end styles for max-width 991px*/
+
+/*************END LEFT NAVBAR STYLING*****************/

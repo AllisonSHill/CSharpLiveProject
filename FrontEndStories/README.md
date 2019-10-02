@@ -485,6 +485,8 @@ Once the navbar was functional, I wrote the styling for the two states:
 
 After the navbar was functional and looked great on my desktop, I wrote four different sizes of media breakpoints, so the navbar would be responsive at all possible screen sizes. If you want to check out all that CSS, [click here](#https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_CSS.css):
 
+//FIX THIS LINK I DUNNO WHATS UP
+
 [Back to Table of Contents](#front-end-stories)
 
 ### NavBar Icon Updates

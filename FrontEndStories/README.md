@@ -1,6 +1,6 @@
 # Front End Stories
 
-This is where the intro goes. This is where I write about my overall experience. Wheeeee
+Writing front end code is always fun because it involves an element of design. For the Management Portal project, I worked on several exciting front end elements. I had a great time creating the chat bubbles, and they turned out really cute. I also updated the site to include a mobile version, with a ViewSwitcher and a fully responsive design. 
 
 ### Table of Contents:
 
@@ -20,9 +20,11 @@ This is where the intro goes. This is where I write about my overall experience.
 
 ### Create ShiftTime Modal
 
-The first story was the front-end development of a modal on the Job Creation page to add shift times to new jobs as they were created. The request was for the addition of a button in the existing Job Create form, in place of an existing text box to add shift times, that would launch a ShiftTime Modal. The modal wanted to contain a series of text boxes for a default shift time, as well as the ability to enter alternate shift times for every day of the week. The story specifically stated that the modal be a separate partial view, within the Jobs folder. After I completed this story, I took a back end story /Link this here/ for the initial implementation of the modal's functionality. 
+This story was for the addition of a button in the existing Job Create form, that would launch a Shift Time Modal. It was specified that the modal contain a series of text boxes, one for a default shift time, and one for each day of the week, to enter alternate shift times if needed. The story specifically stated that the modal was to be a separate partial view, within the Jobs folder. After I completed this story, I took a [back end story](#https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal) for the initial implementation of the modal's functionality. 
 
-```
+The code for the modal partial view. There is a text box for each day of the week, but only Monday is shown as an example:
+
+```html
 @model ManagementPortal.Models.ShiftTime
 
 @{
@@ -58,54 +60,7 @@ The first story was the front-end development of a modal on the Job Creation pag
                                     @Html.ValidationMessageFor(model => model.Monday, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Tuesday, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-6">
-                                    @Html.EditorFor(model => model.Tuesday, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Tuesday, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Wednesday, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-6">
-                                    @Html.EditorFor(model => model.Wednesday, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Wednesday, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Thursday, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-6">
-                                    @Html.EditorFor(model => model.Thursday, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Thursday, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Friday, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-6">
-                                    @Html.EditorFor(model => model.Friday, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Friday, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Saturday, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-6">
-                                    @Html.EditorFor(model => model.Saturday, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Saturday, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Sunday, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-6">
-                                    @Html.EditorFor(model => model.Sunday, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Sunday, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                         </div>
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -117,8 +72,8 @@ The first story was the front-end development of a modal on the Job Creation pag
 </div>
 ```
 
-Added link to launch the Modal in the Create Job page.
-```
+I also added the link to launch the new modal in the Create Job form:
+```html
 @{Html.RenderPartial("~/Views/Jobs/_shiftTimeModal.cshtml");}
         <div class="createBtn">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#ShiftTimeModal">
@@ -126,7 +81,7 @@ Added link to launch the Modal in the Create Job page.
             </button>
         </div>
 ```
-When I finished this story, I chose to implement the Modal's functionality as my next story: [Back End: Implement ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal)
+When I finished this story, I chose to implement the Shift Time modal's functionality as my next story: [Back End: Implement ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/tree/master/BackEndStories#implement-shifttime-modal)
 
 [Back to Table of Contents](#front-end-stories)
 

@@ -87,22 +87,17 @@ When I finished this story, I chose to implement the Shift Time modal's function
 
 ### Chat Box Upgrade
 
-The Management Portal site already had a pretty good chat feature, from the work of previous students. The chat feature was set up and functional to open on all logged in user's screens when a message was sent, as well as save the messages in a database and populate old messages every time the chat modal was launched. The story I took was an upgrade to the design. The client wanted chat bubbles designed in a specific style, and the story included a picture for example: 
+The Management Portal site already had a pretty good chat feature, from the work of previous students. The chat feature was set up and functional to open on all logged in user's screens when a message was sent, as well as save the messages in a database and populate old messages every time the chat modal was launched. The story I took was an upgrade to the design. The client wanted chat bubbles designed in a specific style, and the story included a picture of the desired look: 
 
-![Example Chat Bubbles](https://github.com/allisonhill00/pictures/blob/master/4997%20ChatBox%20Upgrade/example%20bubbles.png){:height="50%" width="50%"}
+![Example Chat Bubbles](https://github.com/allisonhill00/pictures/blob/master/4997%20ChatBox%20Upgrade/example%20bubbles.png)
 
-//screenshot of sample image
+Here are my chat bubbles: 
 
-```
-#discussion {
-    overflow: auto;
-    font-size: .9em;
-    padding: 0px;
-    list-style-type: none;
-    overflow-y: scroll;
-    max-height: 200px;
-}
+//PICTURE OF MY CHAT BUBBLES
 
+To accomplish this look, I targeted specific elements within the CSS. The currently logged in user needed chat bubbles styled differently than everyone else in the conversation, so I differentiated with "my" and "your" chat:
+
+```css
 .chatBubbles {
     border-radius: 20px;
     padding: 8px 15px;
@@ -122,6 +117,7 @@ The Management Portal site already had a pretty good chat feature, from the work
     float: right;
 }
 
+//Creating the tails
 #myChat::before {
     content: "";
     position: absolute;
@@ -157,6 +153,7 @@ The Management Portal site already had a pretty good chat feature, from the work
     margin-right: 25%;
 }
 
+//Creating the tails
 #yourChat::before{
     content: "";
     position: absolute;
@@ -192,44 +189,14 @@ The Management Portal site already had a pretty good chat feature, from the work
     text-align: left;
     margin-top: -20px;
 }
+```
+I amended the Javascript functions to utilize the differentiation between the "my" and "your" styling, but first, there was a minor back end element to this story. I had to pass the identity of the currently logged in user into the Javascript functions, so they would correctly style the chat bubbles. I created the variable "me" in the Chat Controller:
+```c#
+string me = Context.User.Identity.Name;
+```
+Then I could update the Javascript functions.
 
-#message-box {
-    resize: none;
-    width: 80%;
-    height: 35px;
-    padding: 5px;
-    border-radius: 5px;
-    vertical-align: bottom;
-    font-size: .9em;
-}
-
-#send-message {
-    color: white;
-    background-color: gray;
-    height: 40px;
-    width: 65px;
-}
-```
-```
-function openChat() {
-    $("#chat-modal").fadeIn("slow");
-    $("#chatIcon").fadeOut("slow");
-    $('#discussion').animate({
-        scrollTop: $('#discussion').get(0).scrollHeight
-    }, 0);
-}
-```
-For bonus functionality, I added script to allow new chat messages to be sent by hitting the enter key, and I changed the direction the message populated and scrolled to be more intuitive. 
-
-```
-//use enter key to send new chat message
-$("#message-box").keyup(function (e) {
-    if (e.keyCode === 13) {
-        $("#send-message").click();
-    }
-});
-```
-```
+```js
 //populates messages from database into messenger on startup
 chat.client.populateMessages = function (messageList, me) {
     for (var message in messageList) {
@@ -244,7 +211,7 @@ chat.client.populateMessages = function (messageList, me) {
     }
 };  
 ```
-```
+```js
 //prints newly sent instant message to everyones messenger
 chat.client.receiveMessage = function (userName, me, message) {
     if (userName == me) {
@@ -258,14 +225,26 @@ chat.client.receiveMessage = function (userName, me, message) {
     }, 800);
 };
 ```
-
-The most challenging part of this story was figuring out how to change the styling of the chat bubbles based on the currently logged in user, so the user would see their chat messages on the right of the module, and a different color than everyone else's chat. The solution ended up being very simple:  
-
+To mimic the phone messenger look, I also added to the functions, animating the chat messages to scroll down on launch, and when a new message is recieved, and to add new messages to the bottom, pushing old messages up. 
+```js
+function openChat() {
+    $("#chat-modal").fadeIn("slow");
+    $("#chatIcon").fadeOut("slow");
+    $('#discussion').animate({
+        scrollTop: $('#discussion').get(0).scrollHeight
+    }, 0);
+}
 ```
-string me = Context.User.Identity.Name;
+All that created a functional and super cute chat! 
+Before I turned in the story, though, for bonus functionality I added a script for the user to be able to send new chat messages by hitting the enter key inside the message box: 
+```js
+//use enter key to send new chat message
+$("#message-box").keyup(function (e) {
+    if (e.keyCode === 13) {
+        $("#send-message").click();
+    }
+});
 ```
-In the ChatHub Controller, then I simply passed the variable me into the js functions. 
-//screenshot of final chat view
 
 [Back to Table of Contents](#front-end-stories)
 

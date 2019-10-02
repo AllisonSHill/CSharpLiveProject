@@ -228,7 +228,7 @@ The story for the navbar update specified many elements:
 - It should be responsive to small screens.
 - Add the Social Media icons and the copyright text as shown in the image.
 
-//ADD IMAGES FROM STORY
+![Navbar Reference Image](https://github.com/allisonhill00/pictures/blob/master/Left%20side%20navbar/from%20story.png)
 
 I created a single navbar with a toggleable "active" state, and added the hamburger menu icon as well as the close icon at the top. I also updated the icons, and refactored the class and id system of all of the HTML to assist with styling. To check out the full HTML, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_HTML.html). 
 
@@ -261,6 +261,8 @@ $(document).ready(function () {
 
 Once the navbar was functional, I wrote the styling for the two states. If you want to check out all the CSS I wrote for the navbar, 
 [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_CSS.css).
+
+Here's a little snippet of the CSS, if you don't want to view the whole thing:
 ```css
 #menu.active {
     min-width: 230px;
@@ -282,6 +284,13 @@ Once the navbar was functional, I wrote the styling for the two states. If you w
     white-space: nowrap;
 }
 ```
+
+Finished Navbar:
+![Navbar Inactive](https://github.com/allisonhill00/pictures/blob/master/Left%20side%20navbar/Desktop%20Inactive.png)
+
+Finished Navbar active state:
+![Navbar Active](https://github.com/allisonhill00/pictures/blob/master/Left%20side%20navbar/Desktop%20Active%20w%20users.png)
+
 After the navbar was functional and looked great on my desktop, I added three additional sizes of media breakpoints, so the navbar would be responsive at all possible screen sizes. That CSS is also included in the stylesheet linked above, or [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/NavBar_Full_CSS.css).
 
 For a bonus story, after I completed the NavBar, I took on two additional stories to update their icons to be less confusing to users. 
@@ -290,8 +299,6 @@ For a bonus story, after I completed the NavBar, I took on two additional storie
 First:
 Jobs and Job Sites on the navigation bar share the same icon which is confusing to users. 
 Please change the nav icon for the Job site with an icon related to map/location.
-
-[Back to Table of Contents](#front-end-stories)
 
 I took on two mini stories after the navbar update, both quick adjustments to the navbar icons. 
 

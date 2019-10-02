@@ -250,13 +250,12 @@ $("#message-box").keyup(function (e) {
 
 ### NavBar Vital Change and Vertical Navigation Bar Final Touch
 
-There was already a navbar, but it didn't have the functionality desired. (SCREEN SHOTS FROM STORY HERE)
-I basically started over with the CSS, using none of the existing styling. 
+There was already a navbar, but it didn't have the functionality desired. Its most pressing issue was that even though it was launched from a small icon, it left a persistent invisible div when collapsed that covered the left side of the content of the page. With the exception of the overall look of the open navbar, and the links themselves, I refactored all of the functionality and visual elements to create a much simpler, cleaner, more functional navbar. 
 
-From story:
-- The side-nav will have two states. (Opened stated & Collapsed state see images ABOVE.)
+The story for the navbar update specified many elements:
+- The side-nav will have two states, opened state and collapsed state. See images. 
 - On Collapsed state, we should only see the icons for the navigation items. While on Opened state, all their names are visible.
-- On Collapsed state, if you click on one of the icons, additional icons for child items (ViewAll or Create) shows up under the parent icon. See image below or refer to Azure Dev Ops sidebar functionality. 
+- On Collapsed state, if you click on one of the icons, additional icons for child items (ViewAll or Create) shows up under the parent icon. See image. 
 - The three bars (hamburger menu) is responsible for opening and collapsing the side-nav.
 - The side-nav should be static and shouldn't be affected by scrolling.
 - The side-nav should not cover or in any way interfere with the contents of the page opened in either state.
@@ -265,55 +264,84 @@ From story:
 
 //ADD IMAGES FROM STORY
 
-Scootched the content over, needed breakpoints for that too: 
+I created a single navbar with a toggleable "active" state, and added the hamburger menu icon as well as the close icon at the top. I also updated the icons, and refactored the class and id system of all of the HTML to assist with styling:
+```html
+@*/*********************NAVbar*******************/*@
+<div class="wrapper">
+<nav id="menu">
+    <div id="open-menu">
+        <i class="fa fa-reorder"></i>
+    </div>
+    <div id="dismiss">
+        <i class="fa fa-times"></i>
+    </div>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="active"><a href="@Url.Action("Dashboard","Home")"><i class="fa fa-home"></i><text class="nav-title">Home</text></a></li>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <!-- Create Users - ADMIN ONLY -->
+            <li class="has-sub">
+                <a href="#" title="Users"><i class="fa fa-users"></i><text class="nav-title">Users</text></a>
+                <ul>
+                    <li><a href="@Url.Action("Create", "CreateUserRequest")" title="Add Users"><i class="fa fa-user-plus sub-icon"></i><text class="nav-sub-title">Add Users</text></a></li>
+                    <li><a href="@Url.Action("Index", "CreateUserRequest")" title="Unregistered Users"><i class="fa fa-user-times sub-icon"></i><text class="nav-sub-title">Unregistered Users</text></a></li>
+                    <li><a href="@Url.Action("Index", "Users")" title="All Users"><i class="fa fa-address-book sub-icon"></i><text class="nav-sub-title">All Users</text></a></li>
+                </ul>
+            </li>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        <!--Chat-->
+        <li class="has-sub">
+            <a href="#" title="Chat"><i class="fa fa-comments"></i><text class="nav-title">Chat</text></a>
+            <ul>
+                <li><a href="@Url.Action("Index", "ChatMessages")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
+                <li><i class="fa fa-comments sub-icon" onclick="openChat()" title="Open Messenger"></i><text class="nav-sub-title" onclick="openChat()" title="Open Messenger">Open Messenger</text></li>
+            </ul>
+        </li>
+        <li></li><li></li><li></li>
+        <li>
+            <a href="http://facebook.com" target="_blank" title="Facebook"><i class="fa fa-facebook social"></i></a>
+        </li>
+        <li>
+            <a href="http://twitter.com" target="_blank" title="Twitter"><i class="fa fa-twitter social"></i></a>
+        </li>
+        <li>
+            <a href="http://dribbble.com" target="_blank" title="Dribbble"><i class="fa fa-dribbble social"></i></a>
+        </li>
+        <li>
+            <a href="http://linkedin.com" target="_blank" title="Linkedin"><i class="fa fa-linkedin social"></i></a>
+        </li>
+        <li>
+            <a href="http://instagram.com" target="_blank" title="Instagram"><i class="fa fa-instagram social"></i></a>
+        </li>
+        <li class="copyright"><i class="fa fa-copyright copy-icon"></i>&nbsp;by&nbsp;CompanyName.Inc</li>
+        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+</nav>
+</div>
+    }
 ```
-body {
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
-    /*my adds **/
-    background-image: url('images/bgPattern.png');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    margin: auto;
-    padding-left: 80px; /*make space for collapsed navbar*/
-}
 
-/*override body padding to make header be full width*/
-#header-nav {
-    margin-left: -80px;
-}
+I added Javascript to toggle the "active" styling:
+```js
+$(document).ready(function () {
+    $('#open-menu').on('click', function () {
+        $('#menu').toggleClass('active');
+    });
+});
 
-@media screen and (max-width: 480px) {
-    body {
-        padding-left: 45px
-    }
-    #header-nav {
-        margin-left: -45px;
-    }
-}
-
-@media screen and (min-width: 481) and (max-width: 768px) {
-    body {
-        padding-left: 60px
-    }
-    #header-nav {
-        margin-left: -60px;
-    }
-}
-
-@media screen and (min-width: 769) and (max-width: 991px) {
-    body {
-        padding-left: 70px
-    }
-    #header-nav {
-        margin-left: -70px;
-    }
-}
+$(document).ready(function () {
+    $('#dismiss').on('click', function () {
+        $('#menu').toggleClass('active');
+    });
+});
 ```
 
-```
-/************BEGIN LEFT SIDE NAVBAR STYLING**********/
-
+Once the navbar was functional, I wrote the styling for the two states: 
+```css
 #menu.active {
     min-width: 230px;
     max-width: 230px;
@@ -453,7 +481,11 @@ body {
     display: none;
 }
 /*end styles for open and close icons*/
+```
 
+After the navbar was functional and looked great on my desktop, I wrote four different sizes of media breakpoints, so the navbar would be responsive at all possible screen sizes:
+
+```css
 /*styles for max width 480px*/
 @media screen and (max-width: 480px) {
     #menu.active {
@@ -681,210 +713,6 @@ body {
     }
 }
 /*end styles for max-width 991px*/
-
-/*************END LEFT NAVBAR STYLING*****************/
-```
-
-I also wrote new javascript functions, instead of opening and closing the navbar I simply toggled the active state. 
-
-What was there before: (MAYBE KEEP TBD)
-```
-// BEGIN NAVBAR HOVER/MOUSE EFFECTS
-
- //Slide navbar icon with mouse cursor
-//$(document).ready(function () {
-//    $(window).on("mousemove", function (e) {
-//        var yPos = e.pageY - 140;
-//        if (e.pageY > 140) { // Prevents icon from going into header
-//            $(".icon-slider").css("transform", "translateY(" + yPos + "px");
-//        }
-//        else {
-//            $(".icon-slider").css("transform", "translateY(" + 0 + "px");
-//        }
-//    });
-//});
-
-//$(document).ready(function () {
-//    $("#open-menu").on("click", function () {
-//        $(".navbar-collapse").addClass("show");
-//        $(".animated-icon").addClass("open");
-//    });
-//    $("#dismiss").on("click", function () {
-//        $(".navbar-collapse").removeClass("show");
-//        $(".animated-icon").removeClass("open");
-//    });
-//});
-```
-
-What I wrote: (DEFINITELY KEEP)
-
-```
-$(document).ready(function () {
-    $('#open-menu').on('click', function () {
-        $('#menu').toggleClass('active');
-    });
-});
-
-$(document).ready(function () {
-    $('#dismiss').on('click', function () {
-        $('#menu').toggleClass('active');
-    });
-});
-```
-
-I refactored the whole HTML. MAYBE KEEP WHOLE THING MAYBE JUST DO "FROM THIS TO THIS" WITH INFO FROM POST-IT ON DIFFERENT COMPONENTS
-
-```
-@*/*********************NAVbar*******************/*@
-
-<div class="wrapper">
-<nav id="menu">
-    <div id="open-menu">
-        <i class="fa fa-reorder"></i>
-    </div>
-    <div id="dismiss">
-        <i class="fa fa-times"></i>
-    </div>
-
-    <ul class="navbar-nav mr-auto">
-        <li class="active"><a href="@Url.Action("Dashboard","Home")"><i class="fa fa-home"></i><text class="nav-title">Home</text></a></li>
-
-        @if (User.IsInRole("Admin"))
-        {
-            <!-- Create Users - ADMIN ONLY -->
-            <li class="has-sub">
-                <a href="#" title="Users"><i class="fa fa-users"></i><text class="nav-title">Users</text></a>
-                <ul>
-                    <li><a href="@Url.Action("Create", "CreateUserRequest")" title="Add Users"><i class="fa fa-user-plus sub-icon"></i><text class="nav-sub-title">Add Users</text></a></li>
-                    <li><a href="@Url.Action("Index", "CreateUserRequest")" title="Unregistered Users"><i class="fa fa-user-times sub-icon"></i><text class="nav-sub-title">Unregistered Users</text></a></li>
-                    <li><a href="@Url.Action("Index", "Users")" title="All Users"><i class="fa fa-address-book sub-icon"></i><text class="nav-sub-title">All Users</text></a></li>
-                </ul>
-            </li>
-
-            <!-- Jobs - ADMIN ONLY -->
-            <li class="has-sub">
-                <a href="#" title="Jobs"><i class="fa fa-clipboard"></i><text class="nav-title">Jobs</text></a>
-                <ul>
-                    <li><a href="@Url.Action("Index", "Jobs")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
-                    <li><a href="@Url.Action("ManagedList", "Jobs")" title="Managed List"><i class="fa fa-edit sub-icon"></i><text class="nav-sub-title">Managed List</text></a></li>
-                    <li><a href="@Url.Action("Create", "Jobs")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
-                </ul>
-            </li>
-
-            <!-- JobSites - ADMIN ONLY -->
-            <li class="has-sub">
-                <a href="#" title="Job Sites"><i class="fa fa-clipboard"></i><text class="nav-title">Job Sites</text></a>
-                <ul>
-                    <li><a href="@Url.Action("Index", "JobSites")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
-                    <li><a href="@Url.Action("Create", "JobSites")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
-                </ul>
-            </li>
-        }
-
-        <!--Shift Times, Commented out for story 4808, Need to relocate to manager dashboard when created.
-    Drop down menu items need to be updated to new format 9/17/19-->
-        @*<li class="has-sub">
-        <a href="#"><i class="fa fa-clock-o"></i><text class="nav-title">Shift Times</text></a>
-        <ul>
-            <li>@Html.ActionLink("View All", "Index", new { controller = "ShiftTimes" }, new { @class = "dropdown-item" })</li>
-            <li>@Html.ActionLink("Create New", "Create", new { controller = "ShiftTimes" }, new { @class = "dropdown-item" })</li>
-
-                </ul>
-            </li>*@
-
-        <!--Schedules-->
-        <li class="has-sub">
-            <a href="#" title="Schedules"><i class="fa fa-calendar"></i><text class="nav-title">Schedules</text></a>
-            <ul>
-                @if (User.IsInRole("Admin"))
-                {
-                    <li><a href="@Url.Action("Index", "Schedules")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
-                    <li><a href="@Url.Action("Create", "Schedules")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
-                    <li><a href="@Url.Action("Index", "Calendar")" title="Time Off Calendar"><i class="fa fa-calendar sub-icon"></i><text class="nav-sub-title">Time Off Calendar</text></a></li>
-                }
-                @if (User.IsInRole("Employee"))
-                {
-                    <li><a href="@Url.Action("Index", "Schedules")" title="My Schedule"><i class="fa fa-calendar-check-o sub-icon"></i><text class="nav-sub-title">My Schedule</text></a></li>
-                    //This is currently pointing to the schedule index view - a new view will need to be created that shows only the employee's schedule
-                }
-            </ul>
-        </li>
-
-        <!--News-->
-        <li id="news" class="nav-item dropdown">
-            <a href="#" title="News"><i class="fa fa-newspaper-o"></i><text class="nav-title">News</text></a>
-            <ul>
-                <li><a href="@Url.Action("Index", "CompanyNews")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
-                @if (User.IsInRole("Admin"))
-                {
-                    <li><a href="@Url.Action("Create", "CompanyNews")" title="Create New"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Create New</text></a></li>
-                }
-            </ul>
-        </li>
-
-        <!--Chat-->
-        <li class="has-sub">
-            <a href="#" title="Chat"><i class="fa fa-comments"></i><text class="nav-title">Chat</text></a>
-            <ul>
-                <li><a href="@Url.Action("Index", "ChatMessages")" title="View All"><i class="fa fa-list sub-icon"></i><text class="nav-sub-title">View All</text></a></li>
-                <li><a href="@Url.Action("Create", "ChatMessages")" title="Send New Message"><i class="fa fa-plus-square-o sub-icon"></i><text class="nav-sub-title">Send New Message</text></a></li>
-                <li><i class="fa fa-comments sub-icon" onclick="openChat()" title="Open Messenger"></i><text class="nav-sub-title" onclick="openChat()" title="Open Messenger">Open Messenger</text></li>
-            </ul>
-        </li>
-        <li></li><li></li><li></li>
-        <li>
-            <a href="http://facebook.com" target="_blank" title="Facebook"><i class="fa fa-facebook social"></i></a>
-        </li>
-        <li>
-            <a href="http://twitter.com" target="_blank" title="Twitter"><i class="fa fa-twitter social"></i></a>
-        </li>
-        <li>
-            <a href="http://dribbble.com" target="_blank" title="Dribbble"><i class="fa fa-dribbble social"></i></a>
-        </li>
-        <li>
-            <a href="http://linkedin.com" target="_blank" title="Linkedin"><i class="fa fa-linkedin social"></i></a>
-        </li>
-        <li>
-            <a href="http://instagram.com" target="_blank" title="Instagram"><i class="fa fa-instagram social"></i></a>
-        </li>
-        <li class="copyright"><i class="fa fa-copyright copy-icon"></i>&nbsp;by&nbsp;CompanyName.Inc</li>
-        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
-    </ul>
-</nav>
-</div>
-    }
-```
-
-From this to this:
-
-Refactor HTML so that the words can be hidden in collapsed state. 
-from this:
-```
-<a class="nav-title" href="#"><i class="fa fa-clipboard icon-padding" onclick="openNav()"></i>Job Sites</a>
-```
-to this:
-```
-<a href="#"><i class="fa fa-clipboard icon-padding"></i><text class="nav-title">Job Sites</text></a>
-```
-
-Collapsed list items for icons and collapsable functionality 
-from this:
-```
-<li>@Html.ActionLink("Unregistered Users", "Index", new { controller = "CreateUserRequest" }, new { @class = "dropdown-item" })</li>
-```
-to this: (update me)
-```
-<li><a href="@Url.Action("Index", "CreateUserRequest")"><i class="fa fa-paw"></i><text class="nav-sub-title">Unregistered Users</text></a></li>
-```
-
-except the one that's a button
-from this:
-```
-@*<li><button id="open-messenger-btn" onclick="openChat()">Open Messenger</button></li>*@
-```
-to this: (update me)
-```
-<li><i class="fa fa-paw" onclick="openChat()"></i><text class="nav-sub-title" onclick="openChat()">Open Messenger</text></li>
 ```
 
 [Back to Table of Contents](#front-end-stories)

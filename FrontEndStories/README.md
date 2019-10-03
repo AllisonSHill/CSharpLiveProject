@@ -2,6 +2,8 @@
 
 Writing front end code is always fun because it involves an element of design. For the Management Portal project, I worked on several exciting front end elements. I had a great time creating the chat bubbles, and they turned out really cute. I also updated the site to include a mobile version, with a ViewSwitcher and a fully responsive design. 
 
+[Back to Live Project Home](https://github.com/allisonhill00/CSharpLiveProject)
+
 ### Table of Contents:
 
 [5114 & 4990 - NavBar Vital Change and Vertical Navigation Bar Final Touch](#navbar-vital-change-and-vertical-navigation-bar-final-touch)

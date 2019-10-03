@@ -956,11 +956,11 @@ Add client side validation using JavaScript (ie a script that check for these th
 Implement this same validation in the Edit view as well.
 
 I had to change the form method from a button submission to a standard form to have the submit button trigger the JS function before it went to the controller:
-```
+```html
 @using (Html.BeginForm("Edit", "Schedules", FormMethod.Post, new { id = "editSchedule" }))
 ```
 Then I just wrote a couple scripts to make sure the user had selected values from the dropdown: 
-```
+```js
 @*Modal for error message*@
 @Html.Partial("~/Views/Shared/InfoMessageModalPartial.cshtml")
     @section Scripts {

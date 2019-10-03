@@ -2,7 +2,7 @@
 
 ## Intro:
 
-At the end of my bootcamp with the Tech Academy, I spent six weeks working with a team of fellow students to develop a full scale MVC/MVVM Web Application in C#. The application is for a real company, and it was a Management Portal site for employee and schedule management, as well as employee information. This project was a great opportunity to get real world experience, working with a team, and jumping into an app in the middle of its development, instead of starting from the ground up. The project was structured in two week sprints, during which I focused on both Front-End and Back-End development stories. 
+At the end of my bootcamp with The Tech Academy, I spent six weeks working with a team of fellow students to develop a full scale MVC/MVVM Web Application in C#. The application is being developed for a real company, and it is a Management Portal site for managers to view and edit employees, jobs, and schedules, as well as serving as a portal for information for employees. This project was a great learning opportunity, working with a team, and jumping into an app in the middle of its development, instead of starting from the ground up. The project was structured in two week sprints, during which I focused on both Front-End and Back-End development stories. Below is a list of all the stories I worked on during my six weeks on the project. Please feel free to ask me any questions about what you see here! I did a lot of work on this project that I'm very proud of, and would be delighted to chat about it at any time. 
 
 ### Front End Stories:
 

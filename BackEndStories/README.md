@@ -472,7 +472,7 @@ For this one, from the view, I passed in the DisplayName to the JS function inst
         }
 ```
 
-Then I just updated the JS function for the pop up messages (maybe keep tbd):
+Then I just updated the JS function for the pop up messages:
 
 ```js
 //REMOVE USER

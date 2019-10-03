@@ -2,6 +2,8 @@
 
 I worked on several back end stories, both creating functions and fixing bugs within existing functions. This was my first experience entering into an existing project and trying to work backwards to fix issues, but it didn't prove as difficult as I was expecting. I was able to accomplish quite a few back end stories in the short time I was working on the Management Portal project. I implemented a few new pages and forms, as well as handled quite a few bug fixes, and handled the refactoring of some previously messy functions. 
 
+[Back to Live Project Home](https://github.com/allisonhill00/CSharpLiveProject)
+
 ### Table of Contents:
 
 [5027 - Job to Schedules Function](#job-to-schedules-function)

@@ -1,9 +1,6 @@
 # Back End Stories:
 
-Its tough writing spin to make me sound employable. 
-I learned how to enter into an existing project and figure out how it worked, working backwards.
-I was intimidated by back end stories when I started the project, but I ended up having a really good time working through functions.
-Writing functions from scratch might be easier than refactoring.
+I worked on several back end stories, both creating functions and fixing bugs within existing functions. This was my first experience entering into an existing project and trying to work backwards to fix issues, but it didn't prove as difficult as I was expecting. I was able to accomplish quite a few back end stories in the short time I was working on the Management Portal project. I implemented a few new pages and forms, as well as handled quite a few bug fixes, and handled the refactoring of some previously messy functions. 
 
 ### Table of Contents:
 
@@ -27,11 +24,11 @@ Writing functions from scratch might be easier than refactoring.
 
 I did this story right after I created the ShiftTime Modal: [Front End: Create ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#create-shifttime-modal)
 
-We need the ShiftTime Modal to save a ShiftTime object and match it with the job that is being created. The first part of this implementation will beto collect the information from the form submission and send it to the ShiftTime controller. 
+The story stated that the ShiftTime Modal needed to save a ShiftTime object and match it with the job that is being created. I was requested to create a function that would collect the information from the form submission and send it to the ShiftTime controller. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. 
 
-The goal of this story was to write a function for the ShiftTime Modal to save a ShiftTime object and match it with a job that is being created. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. I accomplished this task by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
+I ended up being unable to use the ShiftTime Controller for this function, because the form-within-a-form prevented anything from being submitted without creating the whole job. I ultimately completed this story by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
 
-```
+```c#
 // POST: Jobs/Create
 [HttpPost]
 [ValidateAntiForgeryToken]
@@ -53,7 +50,7 @@ public ActionResult Create([Bind(Include = "JobIb,JobTitle,JobType,Active,Locati
     }
  ```
  
- Also added to the _ShiftTimeModal.cshtml partial view to call the controller function.
+ I also added to the _ShiftTimeModal.cshtml partial view to call the controller function.
  ```
  <div id="ShiftTimeModal" class="modal fade hidden-print" tabindex="-1" role="dialog">
     <div class="modal-dialog modalShiftTimes" role="document">
@@ -73,14 +70,17 @@ public ActionResult Create([Bind(Include = "JobIb,JobTitle,JobType,Active,Locati
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
  ```
       
-
 [Back to Table of Contents](#back-end-stories)
+
 
 ### Job to Schedules Function
 
-From story: We will want to be able to display the schedule items sorted by job. To allow for future functionality to filter these by person or by date, etc, We need a function that takes a specific list of schedule items and builds a dictionary item where the key is the job and the value is the list of schedules for that job. 
+This story stated:
+We will want to be able to display the schedule items sorted by job. To allow for future functionality to filter these by person or by date, etc, We need a function that takes a specific list of schedule items and builds a dictionary item where the key is the job and the value is the list of schedules for that job. 
 
-```
+For this story, I just wrote a function in the Jobs Controller, building the dictionary:
+
+```c#
 //Job to schedules dictionary function
 private Dictionary<Job, List<Schedule>> AddToDictionary(List<Schedule> schedules)
 {
@@ -105,9 +105,12 @@ private Dictionary<Job, List<Schedule>> AddToDictionary(List<Schedule> schedules
 
 [Back to Table of Contents](#back-end-stories)
 
+
 ### Calendar Pull Existing Schedule
 
-From story: The calendar allows for people to set their schedule for time off, but we want it to also populate the events currently scheduled. Create a method within the Calendar Controller that will check for existing schedule items and add them to the calendar. 
+This story stated that the calendar allows for people to set their schedule for time off, but we wanted it to also populate the events currently scheduled. I was asked to create a method within the Calendar Controller that will check for existing schedule items and add them to the calendar. 
+
+I wrote a ShowScheduleItems function in the Calendar Controller, and called it from the Index function to run on page load:
 
 ```
 [HttpGet]
@@ -180,7 +183,9 @@ public void ShowScheduleItems()
     }
 }
 ```
-Then added code so the events would delete from the schedule and the calendar when deleted in either place: 
+
+Then I added code so when an schedule event was deleted from either the schedule and the calendar, it was deleted in the other location as well: 
+
 ```
 [HttpPost]
         public JsonResult DeleteEvent(int eventID)
@@ -211,15 +216,20 @@ Then added code so the events would delete from the schedule and the calendar wh
  
 [Back to Table of Contents](#back-end-stories)
 
+
 ### Implement Schedule Dictionary
 
-The schedule controller has a AddToDictionary function that takes a list of schedules and returns a dictionary object that has Jobs as the key for associated Schedule items. Have the index of Schedules implement this dictionary function, and change the Index view so it relies on the dictionary model instead of the Schedules model. Then use a foreach Job in model loop to display Job title and Job type, with a list of associated schedule items following that. The schedule items should display name and dates.
+This story was created after I created the Schedule dictionary, so I took it too to implement the next step in that functionality:
 
+The schedule controller has an AddToDictionary function that takes a list of schedules and returns a dictionary object that has Jobs as the key for associated Schedule items. Have the index of Schedules implement this dictionary function, and change the Index view so it relies on the dictionary model instead of the Schedules model. Then use a foreach Job in Model loop to display Job title and Job type, with a list of associated schedule items following that. The schedule items should display name and dates.
 Optional Add on:
 Allow for filtering from the index that will send a modified list of schedules that match the filter to display in the index.
 
-Original code - Schedules Controller (from this):
-```
+The story was pretty clear about how it wanted to be accomplished. I updated the Schedules Controller Index method.
+
+Initial code - Schedules Controller:
+
+```c#
 public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, ErrorModalVM error = null)
         {
             if (error != null)
@@ -254,8 +264,9 @@ public ActionResult Index(string sortOrder, string currentFilter, string searchS
      }
 ```
 
-To this!:
-```
+My Updated Function - Schedules Controller:
+
+```c#
     public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, ErrorModalVM error = null)
         {
             //var schedules = db.Schedules.ToList();
@@ -287,8 +298,9 @@ To this!:
         }
 ```
 
-This was technically a back end story but I still had to update the view to utilize the dictionary information, and add in the search box functionality: 
-```
+Even though this was a back end story, I still had to update the view to utilize the dictionary information, and add in the search box functionality: 
+
+```html
 @using ManagementPortal.Common
 @using ManagementPortal.Models
 @model Dictionary<Job, List<Schedule>>
@@ -303,11 +315,8 @@ This was technically a back end story but I still had to update the view to util
         @Html.Partial(AnchorButtonGroupHelper.PartialView, AnchorButtonGroupHelper.GetCreate())
     </p>
     @using (Html.BeginForm("Index", "Schedules", FormMethod.Get))
-
-
     {
         <p>
-            @*search box - NOT CONNECTED  - see Schedules Controller 7/26/19 - J.R. *@
             @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
             <input type="submit" value="Search" />
 
@@ -317,7 +326,6 @@ This was technically a back end story but I still had to update the view to util
             </a>
         </p>
     }
-
         <table class="table">
             <tr>
                 <th scope="col">
@@ -363,16 +371,7 @@ This was technically a back end story but I still had to update the view to util
                             </tr>
                     }
                 }
-
-
             </table>
-
-    @*@*Pages*@
-    @*<br />
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
 
     @****************         Modal Error         *****************@
 
@@ -380,124 +379,126 @@ This was technically a back end story but I still had to update the view to util
     {
         @Html.Partial("_ErrorModal", (ManagementPortal.ViewModels.ErrorModalVM)ViewBag.ErrorModalVM)
     }
-
 </div>
 ```
 
 [Back to Table of Contents](#back-end-stories)
 
+
 ### User-Role Assignment Must Be Required and Save Changes Minor Bug
 
-From stories: 
-When the Admin creates a new user (on CreateUserRequest/Create)
-there is a drop down option to assign the new user a "Role". This must be a required field and the Admin shouldn't be allowed to create a new user  (submit the page) without a role. 
+I took on two mini stories at the end of my Back End sprint, to fill some time. 
 
-```
+The first one I took requested:
+When the Admin creates a new user (on CreateUserRequest/Create) there is a drop down option to assign the new user a "Role". This must be a required field and the Admin shouldn't be allowed to create a new user (submit the page) without a role. 
+
+I simply added the Required tag to the Users Model:
+```c#
 [Required]
 [Display(Name = "User Role")]
 public string UserRole { get; set; }
 ```
+
 Then it was as simple as adding one line to the "Create New User" view:
-```
+```c#
 @Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "text-danger" })
 ```
 
-In Manage/EditAccountInfo view page, the save changes button is serving its purpose by saving the changes. But more than that, it should also take the user back Mange/Index page or (Home/Dashboard) when clicked. All I had to do was one minor edit on the Manage Controller/EditAccountInfo function, which was triggered by the save changes button. 
+The second mini story stated:
+In Manage/EditAccountInfo view page, the save changes button is serving its purpose by saving the changes. But more than that, it should also take the user back Mange/Index page or (Home/Dashboard) when clicked. 
 
-```
+All I had to do was one minor edit on the Manage Controller/EditAccountInfo function, which was triggered by the save changes button. 
+
+```c#
 return RedirectToAction("Index", "Manage");
 ```
 
-Each of these stories needed only one line of code to complete them, so I finished them up quickly. 
-
 [Back to Table of Contents](#back-end-stories)
+
 
 ### User Manager Clean Up
 
-I chose to work on a story that addressed four separate bugs in the User Manager. This was a board where the site Admin could update user roles and delete users. 
+I chose a story that addressed four separate bugs in the User Manager. This was a board where the site Admin could update user roles and delete users. 
 
-EDIT THIS STORY FOR CLARITY. 
+The first bug I addressed was: 
+- There should be a cancel option for assigning the role or deleting the user. Make sure there are two buttons on the pop-up message, one for OK and one for Cancel. The cancel one should use a cancel function that does not complete the action.
 
-From story:
-1) There is sometimes an error message stating that a user is already in a role they are being assigned to. This means that we are not unassigning the old role when changing the role. Add logic to the back end to unassign the user from the previous role before assigning them to the new role.
-
-4) There should be a cancel option for assigning the role or deleting the user. Make sure there are two buttons on the pop-up message, one for OK and one for Cancel. The cancel one should use a cancel function that does not complete the action.
-
-I did this one by enclosing the JS functions in an if/else statement - which added the "ok" and "cancel" buttons to the pop up automatically. (this code is duplicated below in the functions themselves.)
-```
+I did this one by enclosing the JS functions in an if/else statement - which added the "ok" and "cancel" buttons to the pop up automatically. This code is also duplicated below in the functions. 
+```js
 if (confirm("Warning: Are you sure you want to change this user's role? "))
 ```
 
-Update function in User Controller FROM THIS:
-```
+The second bug was:
+- There is sometimes an error message stating that a user is already in a role they are being assigned to. This means that we are not unassigning the old role when changing the role. Add logic to the back end to unassign the user from the previous role before assigning them to the new role.
+
+I updated the function in User Controller, here is the old function for comparison:
+```c#
 if (user.UserRole != userRole)
-                    {
-                        if (user != null)
-                        {
-                            return Json(new { result = "warning", warning = $"Are you sure you want to change this user's role? " });
-                        }
-                        var oldRole = user.UserRole;
-
-                        user.UserRole = userRole;
-
-                        userManager.AddToRole(user.Id, userRole);
-
-                        if (userManager.IsInRole(user.Id, oldRole))
-                        {
-                            userManager.RemoveFromRole(user.Id, oldRole);
-                        }
-
-                        _context.SaveChanges();
-
-                        return Json(new { result = "success", userName = user.UserName, oldRole = oldRole, newRole = userRole });
-                    }
-```
-TO THIS:
-```
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public ActionResult UpdateUserRole(string userId, string userRole)
         {
-            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(userRole))
+            if (user != null)
             {
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
-                var user = userManager.FindById(userId);
-                if (user != null)
+                return Json(new { result = "warning", warning = $"Are you sure you want to change this user's role? " });
+            }
+            var oldRole = user.UserRole;
+            user.UserRole = userRole;
+            userManager.AddToRole(user.Id, userRole);
+            if (userManager.IsInRole(user.Id, oldRole))
+            {
+                userManager.RemoveFromRole(user.Id, oldRole);
+            }
+            _context.SaveChanges();
+            return Json(new { result = "success", userName = user.UserName, oldRole = oldRole, newRole = userRole });
+        }
+```
+
+Here is my update:
+```c#
+[HttpPost]
+[ValidateAntiForgeryToken]
+[Authorize(Roles = "Admin")]
+public ActionResult UpdateUserRole(string userId, string userRole)
+{
+    if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(userRole))
+    {
+        var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+        var user = userManager.FindById(userId);
+        if (user != null)
+        {
+            if (user.UserRole != userRole)
+            {
+                var oldRole = user.UserRole;
+
+                if (userManager.IsInRole(user.Id, oldRole))
                 {
-                    if (user.UserRole != userRole)
-                    {
-                        var oldRole = user.UserRole;
-
-                        if (userManager.IsInRole(user.Id, oldRole))
-                        {
-                            userManager.RemoveFromRole(user.Id, oldRole);
-                        }
-                        user.UserRole = userRole;
-                        userManager.AddToRole(user.Id, userRole);
-
-                        _context.SaveChanges();
-
-                        return Json(new { result = "success", displayName = user.DisplayName, oldRole = oldRole, newRole = userRole });
-                    }
-                    else
-                    {
-                        return Json(new { result = "error", message = $"user was already in role: {userRole}" });
-                    }
+                    userManager.RemoveFromRole(user.Id, oldRole);
                 }
-                else
-                {
-                    return Json(new { result = "error", message = $"user id {userId} could not be found in the database" });
-                }
+                user.UserRole = userRole;
+                userManager.AddToRole(user.Id, userRole);
+
+                _context.SaveChanges();
+
+                return Json(new { result = "success", displayName = user.DisplayName, oldRole = oldRole, newRole = userRole });
             }
             else
             {
-                return Json(new { result = "error", message = "missing required arguments" });
+                return Json(new { result = "error", message = $"user was already in role: {userRole}" });
             }
         }
+        else
+        {
+            return Json(new { result = "error", message = $"user id {userId} could not be found in the database" });
+        }
+    }
+    else
+    {
+        return Json(new { result = "error", message = "missing required arguments" });
+    }
+}
 ```
-Javascript: 
-```
+
+This is the Javascript function for updating users, reflecting changes from both bug fixes:
+
+```js
 function updateUserRole(formId) {
 var form = $('#roleForm_' + formId);
 if (confirm("Warning: Are you sure you want to change this user's role? ")) {
@@ -532,25 +533,30 @@ else {
 }
 ```
 
-2) The error message for not deleting someone from the database who is on the schedule displays the users GUID instead of their name when alerting the admin they cannot delete this user. Change this to be the user's display name.
+The next bug was:
+- The error message for not deleting someone from the database who is on the schedule displays the users GUID instead of their name when alerting the admin they cannot delete this user. Change this to be the user's display name.
 
-For this one I just had to edit the message in the RemoveUser Controller function because the userID and DisplayName were already accessible from that function: 
-```
+For this bug I just had to edit the message in the RemoveUser Controller function because the userID and DisplayName were already accessible from that function: 
+```c#
 return Json(new { result = "error", message = $"User {user.DisplayName} is on schedule and could not be deleted." });
 ```
 
-3) The message asking if the admin is sure they want to delete a user displays the username. Change this to the display name.
+The final bug stated: 
+The message asking if the admin is sure they want to delete a user displays the username. Change this to the display name.
 
-From the view, I passed in the DisplayName to the JS function instead - accomplished by changing the model from a UserVM (which we ultimately deleted) to the regular ApplicationUser Model that all the other views and functions were referencing to get user info:
-```
+For this one, from the view, I passed in the DisplayName to the JS function instead - accomplished by changing the model from a UserVM (which we ultimately deleted) to the regular ApplicationUser Model that all the other views and functions were referencing to get user info:
+
+```c#
 @using (Html.BeginForm("RemoveUser", "Users", FormMethod.Post, new { id = $"removeForm_{i}" }))
-                {
-                    <input type="hidden" name="userId" value="@Model[i].Id" />
-                    @Html.AntiForgeryToken()
-                    <input type="button" onclick="removeUser(@i, '@Model[i].DisplayName')" value="Remove User" />
-                }
+        {
+            <input type="hidden" name="userId" value="@Model[i].Id" />
+            @Html.AntiForgeryToken()
+            <input type="button" onclick="removeUser(@i, '@Model[i].DisplayName')" value="Remove User" />
+        }
 ```
+
 Then I just updated the JS function for the pop up messages (maybe keep tbd):
+
 ```
 //REMOVE USER
 function removeUser(formId, displayName) {
@@ -582,17 +588,19 @@ function removeUser(formId, displayName) {
 }
 ```
 
-While working on this story, I ran into some issues that revelealed to the PM that the UserController needed to be refactored. A separate story was created for this, and I took that too because I was familiar with the errors that were currently happening. 
+While working on this story, I ran into some issues that revealed to the PM that the UserController needed to be refactored. A separate story was created for this, and I took that too because I was familiar with the current issues. 
 
 [Back to Table of Contents](#back-end-stories)
 
 ### Refactor Users Controller
 
-From story: 
-1) Refactor the _UserList method so it grabs the list of users from the database, and sends that list as the model instead of going through what was the process of creating a UserVM. 
-2) Exclude the UserVM from the project, test to make sure nothing is dependent on it. Remove any dependencies you find, and delete the User VM.
-4) Determine what if anything the isAdminUser is doing. Replace it with the built in Identity method of checking roles.
-5) Add comments to the Users Controller documenting the functions and their purpose, and where they are used.
+For this story, I had to:
+- Refactor the _UserList method so it grabs the list of users from the database, and sends that list as the model instead of going through what was the process of creating a UserVM. 
+- Exclude the UserVM from the project, and test to make sure nothing is dependent on it. Remove any dependencies you find, and delete the User VM.
+- Determine what, if anything, the isAdminUser function is doing. Replace it with the built in Identity method of checking roles.
+- Add comments to the Users Controller documenting the functions and their purpose, and where they are used.
+
+Here is my refactored UsersController, with comments:
 
 ```c#
 using ManagementPortal.Models;
@@ -742,12 +750,13 @@ namespace ManagementPortal.Controllers
 ```
 
 For this one I also had to update the Index to a super basic table - bc this is a back end story so I don't need to worry about making it pretty: 
+There was one more element to the story:
+- Determine what, if anything, the Index Users view is doing, and modify it to simply display a list of all users.
 
-3) Determine what if anything the Index Users view is doing, and modify it to simply display a list of all users.
+I had to add a table to the Index users view to display the list:
 
-```
+```html
 @using ManagementPortal.Models
-
 @model List<ApplicationUser>
 @{
     ViewBag.Title = "Index";
@@ -806,11 +815,14 @@ For this one I also had to update the Index to a super basic table - bc this is 
 
 [Back to Table of Contents](#back-end-stories)
 
+
 ### Implement Contact Us Page
 
-The controller: 
+This was a full stack story so I also created the view, check out more details, and that code, in the Front End section: 
+[Front end Components](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#implement-contact-us-page)
 
-```
+The controller: 
+```c#
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -904,8 +916,7 @@ namespace ManagementPortal.Controllers
 ```
 
 The Model:
-
-```    
+```c#
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -928,8 +939,5 @@ namespace ManagementPortal.Models
     }
 }
 ```
-
-This was a full stack story so I also created the view, check that out in the Front End section: 
-[Front end Components](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#implement-contact-us-page)
 
 [Back to Table of Contents](#back-end-stories)

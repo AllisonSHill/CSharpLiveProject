@@ -228,7 +228,7 @@ This story stated that the calendar allows for people to set their schedule for 
 
 I wrote a ShowScheduleItems function in the Calendar Controller, and called it from the Index function to run on page load:
 
-```
+```c#
 [HttpGet]
 public void ShowScheduleItems()
 {
@@ -302,7 +302,7 @@ public void ShowScheduleItems()
 
 Then I added code so when an schedule event was deleted from either the schedule and the calendar, it was deleted in the other location as well: 
 
-```
+```c#
 [HttpPost]
         public JsonResult DeleteEvent(int eventID)
         {
@@ -474,7 +474,7 @@ For this one, from the view, I passed in the DisplayName to the JS function inst
 
 Then I just updated the JS function for the pop up messages (maybe keep tbd):
 
-```
+```js
 //REMOVE USER
 function removeUser(formId, displayName) {
     var form = $('#removeForm_' + formId);
@@ -796,7 +796,7 @@ public ActionResult Create([Bind(Include = "JobIb,JobTitle,JobType,Active,Locati
  ```
  
  I also added to the _ShiftTimeModal.cshtml partial view to call the controller function.
- ```
+ ```html
  <div id="ShiftTimeModal" class="modal fade hidden-print" tabindex="-1" role="dialog">
     <div class="modal-dialog modalShiftTimes" role="document">
         <div class="modal-content">

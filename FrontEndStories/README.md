@@ -157,7 +157,11 @@ namespace ManagementPortal {
 }
 ```
 
-Then I wrote a CSS page to be triggered by the ViewSwitcher. To view my whole mobile stylesheet, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/MobileSite_Full_CSS.css).
+Then I wrote a CSS page to be triggered by the ViewSwitcher. I had to do many minor style tweaks, but a lot of the elements were easy to adapt to mobile. To view my whole mobile stylesheet, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/MobileSite_Full_CSS.css).
+
+The mobile Dashboard view for logged in users: 
+
+![Mobile Dashboard](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/Home%20page%20top.png)
 
 These steps took care of a lot of the styling, and I had already created a mobile navbar in a previous story. I created partial views for all the tables within the site, and called them from the desktop view when mobile was detected. There are tables in the desktop view for Jobsites, Jobs, Schedules, and Users (active, suspended, and unregistered). 
 
@@ -244,6 +248,16 @@ Users List mobile view:
 ![Users Mobile](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/UserList%20Mobile%20table.png)
 
 To view the code for the Users List mobile table, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/UsersListTable_Mobile_HTML.html).
+
+The two other pages I had to address separately were the Calendar and the Home/Index view, seen before the user logged in. Here is the Mobile Calendar view: 
+
+![Mobile Calendar](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/Calendar%20mobilepng.png)
+
+And here is the Home page, which was referred to as the Jumbotron:
+
+![Jumbotron](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/Jumbotron%20mobile.png)
+
+To view my whole mobile stylesheet, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/MobileSite_Full_CSS.css).
 
 The last element I had to address was the chat. For the mobile site, it was requested that the chat open in a different window, and fill that window, while maintaining the same functionality. To view the HTML and CSS I added to accomplish this, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/MobileChat_Full_HTML.html).
 

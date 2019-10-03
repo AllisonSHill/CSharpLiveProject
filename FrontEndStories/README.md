@@ -493,6 +493,7 @@ To view the code for the Users List mobile table, [click here](https://github.co
 The last element I had to address was the chat. For the mobile site, it was requested that the chat open in a different window, and fill that window, while maintaining the same functionality. To view the HTML and CSS I added to accomplish this, [click here](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FullCode/MobileChat_Full_HTML.html).
 
 Mobile Chat end result:
+
 ![Mobile Chat](https://github.com/allisonhill00/pictures/blob/master/Mobile%20site/Chat%20mobile.png)
 
 [Back to Table of Contents](#front-end-stories)

@@ -103,9 +103,6 @@ After the navbar was functional and looked great on my desktop, I added three ad
 For a bonus story, after I completed the NavBar, I took on two additional stories to update their icons to be less confusing to users. 
 
 #### NavBar Icon Updates
-First:
-Jobs and Job Sites on the navigation bar share the same icon which is confusing to users. 
-Please change the nav icon for the Job site with an icon related to map/location.
 
 I took on two mini stories after the navbar update, both quick adjustments to the navbar icons. 
 
@@ -118,7 +115,7 @@ For this one, I updated the Job Sites marker to fa-map-marker, in both _Layout.c
 Second:
 Remove the "Send New Message" from the dropdown list of the Chat nav item, as we aren't using it anymore. 
 
-I simply deleted the icon from both the Layout views. 
+For this one, I simply deleted the icon from both the Layout views. 
 
 [Back to Table of Contents](#front-end-stories)
 

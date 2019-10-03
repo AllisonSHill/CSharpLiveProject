@@ -4,73 +4,21 @@ I worked on several back end stories, both creating functions and fixing bugs wi
 
 ### Table of Contents:
 
-[5061 - Implement ShiftTime Modal](#implement-shifttime-modal)
-
 [5027 - Job to Schedules Function](#job-to-schedules-function)
-
-[5103 - Calendar Pull Existing Schedule](#calendar-pull-existing-schedule)
 
 [5099 - Implement Schedule Dictionary](#implement-schedule-dictionary)
 
-[5085 & 5087 - User Role Assignment Must Be Required and Save Changes Minor Bug](#user-role-assignment-must-be-required-and-save-changes-minor-bug)
+[5103 - Calendar Pull Existing Schedule](#calendar-pull-existing-schedule)
 
 [5074 - User Manager Clean Up](#user-manager-clean-up)
 
 [5106 - Refactor Users Controller](#refactor-users-controller)
 
+[5085 & 5087 - User Role Assignment Must Be Required and Save Changes Minor Bug](#user-role-assignment-must-be-required-and-save-changes-minor-bug)
+
+[5061 - Implement ShiftTime Modal](#implement-shifttime-modal)
+
 [5148 - Implement Contact Us Page](#implement-contact-us-page)
-
-### Implement ShiftTime Modal
-
-I did this story right after I created the ShiftTime Modal: [Front End: Create ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#create-shifttime-modal)
-
-The story stated that the ShiftTime Modal needed to save a ShiftTime object and match it with the job that is being created. I was requested to create a function that would collect the information from the form submission and send it to the ShiftTime controller. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. 
-
-I ended up being unable to use the ShiftTime Controller for this function, because the form-within-a-form prevented anything from being submitted without creating the whole job. I ultimately completed this story by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
-
-```c#
-// POST: Jobs/Create
-[HttpPost]
-[ValidateAntiForgeryToken]
-public ActionResult Create([Bind(Include = "JobIb,JobTitle,JobType,Active,Location,Manager")] Job job,
-    [Bind(Include = "ShiftTimeId,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Default")] ShiftTime shiftTime)
-{
-    shiftTime.Job = job;
-    PopulateJobDropDowns(job);
-    var LocationId = Request.Form["LocationSelector"].ToString();
-    var ManagerId = Request.Form["ManagerSelector"].ToString();
-    if (ModelState.IsValid)
-    {
-        job.Location = db.JobSites.Find(Int32.Parse(LocationId));
-        job.Manager = db.Users.Find(ManagerId);
-        db.Jobs.Add(job);
-        db.ShiftTime.Add(shiftTime);
-        db.SaveChanges();
-        return RedirectToAction("Index");
-    }
- ```
- 
- I also added to the _ShiftTimeModal.cshtml partial view to call the controller function.
- ```
- <div id="ShiftTimeModal" class="modal fade hidden-print" tabindex="-1" role="dialog">
-    <div class="modal-dialog modalShiftTimes" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Modify Shift Times</h4>
-            </div>
-            <div class="modal-body">
-                <div id="formContent">
-                    @using (Html.BeginForm("Create", "ShiftTimes", FormMethod.Post, new { id = "form-shiftTimeAdd" }))
-                    
-                    FORM INFORMATION - SEE FRONT END IF INTERESTED
-                    
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
- ```
-      
-[Back to Table of Contents](#back-end-stories)
 
 
 ### Job to Schedules Function
@@ -103,117 +51,6 @@ private Dictionary<Job, List<Schedule>> AddToDictionary(List<Schedule> schedules
 }
 ```
 
-[Back to Table of Contents](#back-end-stories)
-
-
-### Calendar Pull Existing Schedule
-
-This story stated that the calendar allows for people to set their schedule for time off, but we wanted it to also populate the events currently scheduled. I was asked to create a method within the Calendar Controller that will check for existing schedule items and add them to the calendar. 
-
-I wrote a ShowScheduleItems function in the Calendar Controller, and called it from the Index function to run on page load:
-
-```
-[HttpGet]
-public void ShowScheduleItems()
-{
-    var schedules = db.Schedules.ToList();
-    foreach (var schedule in schedules)
-    {
-        var schEvent = new CalendarEvent();
-        //convert schedule event properties into calendar event properties
-        schEvent.Subject = Convert.ToString(schedule.Job.JobTitle);
-        schEvent.Start = schedule.StartDate;
-        schEvent.End = schedule.EndDate;
-        schEvent.Description = "Employee: " + Convert.ToString(schedule.Person.DisplayName) + "  " + "\nJob Type: " + Convert.ToString(schedule.Job.JobType);
-        schEvent.IsFullDay = true;
-        schEvent.ScheduleId = Convert.ToString(schedule.ScheduleId);
-        if (schEvent.End > DateTime.Now.Date && schEvent.Start < DateTime.Now.Date)
-        {
-            schEvent.Start = DateTime.Now.AddMinutes(1);
-        }
-        try
-        {
-            if (ModelState.IsValid)
-            {
-                //check if an event with a matching ScheduleId is currently on the calendar
-                var match = db.CalendarEvents.Where(a => a.ScheduleId == schEvent.ScheduleId).SingleOrDefault();
-                if (match != null)
-                {
-                    var oldSchEvent = match;
-                    //check for differences in any properties between events with matching ScheduleId and update db
-                    if (oldSchEvent.Subject != schEvent.Subject)
-                    {
-                        oldSchEvent.Subject = schEvent.Subject;
-                    }
-                    else if (oldSchEvent.Start != schEvent.Start)
-                    {
-                        oldSchEvent.Start = schEvent.Start;
-                    }
-                    else if (oldSchEvent.End != schEvent.End)
-                    {
-                        oldSchEvent.End = schEvent.End;
-                    }
-                    else if (oldSchEvent.Description != schEvent.Description)
-                    {
-                        oldSchEvent.Description = schEvent.Description;
-                    }
-                    else if (oldSchEvent.IsFullDay != schEvent.IsFullDay)
-                    {
-                        oldSchEvent.IsFullDay = schEvent.IsFullDay;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                    //update database entry
-                    db.Entry(oldSchEvent).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-                else //add new event
-                {
-                    db.CalendarEvents.Add(schEvent);
-                    db.SaveChanges();
-                }
-            }
-        }
-        catch
-        {
-            throw new ArgumentException("Event cannot end before today's date.");
-        }
-    }
-}
-```
-
-Then I added code so when an schedule event was deleted from either the schedule and the calendar, it was deleted in the other location as well: 
-
-```
-[HttpPost]
-        public JsonResult DeleteEvent(int eventID)
-        {
-            var status = false;
-            var calEvent = db.CalendarEvents.Where(a => a.EventID == eventID).FirstOrDefault();
-            if (calEvent != null)
-            {
-                if (calEvent.ScheduleId != null)
-                {
-                    //Send schedules to list
-                    var schedules = db.Schedules.ToList();
-                    foreach (var schedule in schedules)
-                    {
-                        if (Convert.ToString(schedule.ScheduleId) == calEvent.ScheduleId) //Check for matching ScheduleId
-                        {
-                            db.Schedules.Remove(schedule);
-                        }
-                    }
-                    db.CalendarEvents.Remove(calEvent);
-                    db.SaveChanges();
-                }
-            }
-            status = true;
-            return new JsonResult { Data = new { status = status } };
-        }
- ```
- 
 [Back to Table of Contents](#back-end-stories)
 
 
@@ -385,34 +222,114 @@ Even though this was a back end story, I still had to update the view to utilize
 [Back to Table of Contents](#back-end-stories)
 
 
-### User-Role Assignment Must Be Required and Save Changes Minor Bug
+### Calendar Pull Existing Schedule
 
-I took on two mini stories at the end of my Back End sprint, to fill some time. 
+This story stated that the calendar allows for people to set their schedule for time off, but we wanted it to also populate the events currently scheduled. I was asked to create a method within the Calendar Controller that will check for existing schedule items and add them to the calendar. 
 
-The first one I took requested:
-When the Admin creates a new user (on CreateUserRequest/Create) there is a drop down option to assign the new user a "Role". This must be a required field and the Admin shouldn't be allowed to create a new user (submit the page) without a role. 
+I wrote a ShowScheduleItems function in the Calendar Controller, and called it from the Index function to run on page load:
 
-I simply added the Required tag to the Users Model:
-```c#
-[Required]
-[Display(Name = "User Role")]
-public string UserRole { get; set; }
+```
+[HttpGet]
+public void ShowScheduleItems()
+{
+    var schedules = db.Schedules.ToList();
+    foreach (var schedule in schedules)
+    {
+        var schEvent = new CalendarEvent();
+        //convert schedule event properties into calendar event properties
+        schEvent.Subject = Convert.ToString(schedule.Job.JobTitle);
+        schEvent.Start = schedule.StartDate;
+        schEvent.End = schedule.EndDate;
+        schEvent.Description = "Employee: " + Convert.ToString(schedule.Person.DisplayName) + "  " + "\nJob Type: " + Convert.ToString(schedule.Job.JobType);
+        schEvent.IsFullDay = true;
+        schEvent.ScheduleId = Convert.ToString(schedule.ScheduleId);
+        if (schEvent.End > DateTime.Now.Date && schEvent.Start < DateTime.Now.Date)
+        {
+            schEvent.Start = DateTime.Now.AddMinutes(1);
+        }
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                //check if an event with a matching ScheduleId is currently on the calendar
+                var match = db.CalendarEvents.Where(a => a.ScheduleId == schEvent.ScheduleId).SingleOrDefault();
+                if (match != null)
+                {
+                    var oldSchEvent = match;
+                    //check for differences in any properties between events with matching ScheduleId and update db
+                    if (oldSchEvent.Subject != schEvent.Subject)
+                    {
+                        oldSchEvent.Subject = schEvent.Subject;
+                    }
+                    else if (oldSchEvent.Start != schEvent.Start)
+                    {
+                        oldSchEvent.Start = schEvent.Start;
+                    }
+                    else if (oldSchEvent.End != schEvent.End)
+                    {
+                        oldSchEvent.End = schEvent.End;
+                    }
+                    else if (oldSchEvent.Description != schEvent.Description)
+                    {
+                        oldSchEvent.Description = schEvent.Description;
+                    }
+                    else if (oldSchEvent.IsFullDay != schEvent.IsFullDay)
+                    {
+                        oldSchEvent.IsFullDay = schEvent.IsFullDay;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    //update database entry
+                    db.Entry(oldSchEvent).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else //add new event
+                {
+                    db.CalendarEvents.Add(schEvent);
+                    db.SaveChanges();
+                }
+            }
+        }
+        catch
+        {
+            throw new ArgumentException("Event cannot end before today's date.");
+        }
+    }
+}
 ```
 
-Then it was as simple as adding one line to the "Create New User" view:
-```c#
-@Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "text-danger" })
+Then I added code so when an schedule event was deleted from either the schedule and the calendar, it was deleted in the other location as well: 
+
 ```
-
-The second mini story stated:
-In Manage/EditAccountInfo view page, the save changes button is serving its purpose by saving the changes. But more than that, it should also take the user back Mange/Index page or (Home/Dashboard) when clicked. 
-
-All I had to do was one minor edit on the Manage Controller/EditAccountInfo function, which was triggered by the save changes button. 
-
-```c#
-return RedirectToAction("Index", "Manage");
-```
-
+[HttpPost]
+        public JsonResult DeleteEvent(int eventID)
+        {
+            var status = false;
+            var calEvent = db.CalendarEvents.Where(a => a.EventID == eventID).FirstOrDefault();
+            if (calEvent != null)
+            {
+                if (calEvent.ScheduleId != null)
+                {
+                    //Send schedules to list
+                    var schedules = db.Schedules.ToList();
+                    foreach (var schedule in schedules)
+                    {
+                        if (Convert.ToString(schedule.ScheduleId) == calEvent.ScheduleId) //Check for matching ScheduleId
+                        {
+                            db.Schedules.Remove(schedule);
+                        }
+                    }
+                    db.CalendarEvents.Remove(calEvent);
+                    db.SaveChanges();
+                }
+            }
+            status = true;
+            return new JsonResult { Data = new { status = status } };
+        }
+ ```
+ 
 [Back to Table of Contents](#back-end-stories)
 
 
@@ -591,6 +508,7 @@ function removeUser(formId, displayName) {
 While working on this story, I ran into some issues that revealed to the PM that the UserController needed to be refactored. A separate story was created for this, and I took that too because I was familiar with the current issues. 
 
 [Back to Table of Contents](#back-end-stories)
+
 
 ### Refactor Users Controller
 
@@ -813,6 +731,90 @@ I had to add a table to the Index users view to display the list:
 </table>
 ```
 
+[Back to Table of Contents](#back-end-stories)
+
+
+### User-Role Assignment Must Be Required and Save Changes Minor Bug
+
+I took on two mini stories at the end of my Back End sprint, to fill some time. 
+
+The first one I took requested:
+When the Admin creates a new user (on CreateUserRequest/Create) there is a drop down option to assign the new user a "Role". This must be a required field and the Admin shouldn't be allowed to create a new user (submit the page) without a role. 
+
+I simply added the Required tag to the Users Model:
+```c#
+[Required]
+[Display(Name = "User Role")]
+public string UserRole { get; set; }
+```
+
+Then it was as simple as adding one line to the "Create New User" view:
+```c#
+@Html.ValidationMessageFor(model => model.UserRole, "", new { @class = "text-danger" })
+```
+
+The second mini story stated:
+In Manage/EditAccountInfo view page, the save changes button is serving its purpose by saving the changes. But more than that, it should also take the user back Mange/Index page or (Home/Dashboard) when clicked. 
+
+All I had to do was one minor edit on the Manage Controller/EditAccountInfo function, which was triggered by the save changes button. 
+
+```c#
+return RedirectToAction("Index", "Manage");
+```
+
+[Back to Table of Contents](#back-end-stories)
+
+
+### Implement ShiftTime Modal
+
+I did this story right after I created the ShiftTime Modal: [Front End: Create ShiftTime Modal](https://github.com/allisonhill00/CSharpLiveProject/blob/master/FrontEndStories/README.md#create-shifttime-modal)
+
+The story stated that the ShiftTime Modal needed to save a ShiftTime object and match it with the job that is being created. I was requested to create a function that would collect the information from the form submission and send it to the ShiftTime controller. There was a note in the story that there would be a follow up story to link the ShiftTime to the correct Job in the database. 
+
+I ended up being unable to use the ShiftTime Controller for this function, because the form-within-a-form prevented anything from being submitted without creating the whole job. I ultimately completed this story by adding to the Create function within the JobsController, using a bind statement to submit the data from the ShiftTime Modal through clicking the Submit button of the parent Add Job form. 
+
+```c#
+// POST: Jobs/Create
+[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Create([Bind(Include = "JobIb,JobTitle,JobType,Active,Location,Manager")] Job job,
+    [Bind(Include = "ShiftTimeId,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday,Default")] ShiftTime shiftTime)
+{
+    shiftTime.Job = job;
+    PopulateJobDropDowns(job);
+    var LocationId = Request.Form["LocationSelector"].ToString();
+    var ManagerId = Request.Form["ManagerSelector"].ToString();
+    if (ModelState.IsValid)
+    {
+        job.Location = db.JobSites.Find(Int32.Parse(LocationId));
+        job.Manager = db.Users.Find(ManagerId);
+        db.Jobs.Add(job);
+        db.ShiftTime.Add(shiftTime);
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+ ```
+ 
+ I also added to the _ShiftTimeModal.cshtml partial view to call the controller function.
+ ```
+ <div id="ShiftTimeModal" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog modalShiftTimes" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Modify Shift Times</h4>
+            </div>
+            <div class="modal-body">
+                <div id="formContent">
+                    @using (Html.BeginForm("Create", "ShiftTimes", FormMethod.Post, new { id = "form-shiftTimeAdd" }))
+                    
+                    FORM INFORMATION - SEE FRONT END IF INTERESTED
+                    
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+ ```
+      
 [Back to Table of Contents](#back-end-stories)
 
 
